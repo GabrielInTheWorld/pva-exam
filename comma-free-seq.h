@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -16,7 +17,7 @@ public:
 private:
     vector<string> wordList;
 
-    bool arePermutation(string word, string comparison);
+    bool isPermutation(string word, string comparison);
     bool checkIfPermutation(string word);
     bool checkIfPeriodic(string word);
     bool checkIfCommaFree(string word);

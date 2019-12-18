@@ -11,12 +11,12 @@ bool CommaFreeSeq::checkIfCommaFree(string word) {
 }
 
 bool CommaFreeSeq::checkIfPeriodic(string word) {
-    return word.substr(0, 1) == word.substr(2, 3);
+    return word[0] == word[2] && word[1] == word[3];
 }
 
 bool CommaFreeSeq::checkIfPermutation(string word) {
     for ( int i = 0; i < wordList.size(); ++i ) {
-        if ( arePermutation(word, wordList[i]) ) {
+        if ( isPermutation(word, wordList[i]) ) {
             cout << word << " is permutation of " << wordList[i] << endl;
             return true;
         }
@@ -24,20 +24,16 @@ bool CommaFreeSeq::checkIfPermutation(string word) {
     return false;
 }
 
-bool CommaFreeSeq::arePermutation(string word, string comparison) {
-    int count[4] = { 0 };
+bool CommaFreeSeq::isPermutation(string word, string comparison) {
+    sort(word.begin(), word.end());
+    sort(comparison.begin(), comparison.end());
 
-    // Check, if there are the same number of letters.
-    for ( int i = 0; i < 4; ++i ) {
-        count[word[i]]++;
-        count[word[i]]--;
-    }
-
-    for ( int i = 0; i < 4; ++i ) {
-        if ( count[i] ) {
+    for ( int i = 0; i < word.length(); ++i ) {
+        if ( word[i] != comparison[i] ) {
             return false;
         }
     }
+
     return true;
 }
 
