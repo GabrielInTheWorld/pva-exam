@@ -3,9 +3,15 @@
 
 #include <iostream>
 
+#include "comma-free-seq.h"
+
+#include <tbb/parallel_for.h>
+
 int main()
 {
     std::cout << "Hello World!\n";
+    
+    CommaFreeSeq cfs;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
