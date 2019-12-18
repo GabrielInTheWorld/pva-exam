@@ -18,5 +18,21 @@
     <ClCompile Include="pva-exam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="comma-free-seq.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="comma-free-seq.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="word-list.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

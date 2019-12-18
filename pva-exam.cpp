@@ -5,10 +5,7 @@
 
 #include "comma-free-seq.h"
 
-#include <tbb/parallel_for.h>
-
-int main()
-{
+int main() {
     std::cout << "Hello World!\n";
     
     CommaFreeSeq cfs;
