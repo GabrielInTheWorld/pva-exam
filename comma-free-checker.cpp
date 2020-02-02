@@ -1,6 +1,6 @@
 #include "comma-free-checker.h"
 
-CommaFreeChecker::CommaFreeChecker(string* words, string& word, int index, int raise, int n, int k): words(words), word(word), index(index), raise(raise) {
+CommaFreeChecker::CommaFreeChecker(string* words, string word, int index, int raise, int n, int k): words(words), word(word), index(index), raise(raise) {
     this->n = n;
     this->k = k;
 }
@@ -9,6 +9,8 @@ CommaFreeChecker::~CommaFreeChecker() {}
 
 task* CommaFreeChecker::execute() {
     word[index] += raise;
+    cout << index << "\t" << raise << "\t" << word << endl;
+    //cout << *words << endl;
     if ( !contains(word) && !checkIfPeriodic(word) ) {
         words->append(word);
     }
@@ -42,6 +44,7 @@ bool CommaFreeChecker::checkIfPeriodic(string word) {
 }
 
 bool CommaFreeChecker::contains(string word) {
+    //string tmpWords = *words;
     return words->find(word) != string::npos;
 }
 

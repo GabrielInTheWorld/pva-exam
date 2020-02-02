@@ -3,24 +3,33 @@
 
 #include <iostream>
 #include <string>
+#include <tbb/task.h>
 
 #include "comma-free-seq.h"
 #include "comma-free-checker.h"
 #include "comma-free-parallel.h"
 
 using namespace std;
+using namespace tbb;
 
 int main() {
     std::cout << "Hello World!\n";
 
-    string letters = "abcdefghijklmnopqrstuvwxyz";
-    char tmp = letters[0];
-    for ( int i = 0; i < 25; i++ ) {
+    int n = 3;
+    int k = 4;
 
-        letters[i] = letters[i + 1];
+    string words = "";
+    string startWord = "";
+    for ( int i = 0; i < k; ++i ) {
+        startWord.append("a");
     }
-    letters[25] = tmp;
-    cout << letters << endl;
+    for ( int i = 0; i < n; ++i ) {
+        string tmp = startWord;
+        CommaFreeChecker* root = new (task::allocate_root())CommaFreeChecker(&words, tmp, 0, i, n, k);
+        tbb::task::spawn_root_and_wait(*root);
+    }
+    cout << "Finished!" << endl;
+    cout << "Words: " << words << endl;
 
     //CommaFreeSeq cfs;
 }

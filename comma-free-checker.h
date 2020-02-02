@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <tbb/task.h>
 #include <tbb/parallel_for.h>
 
@@ -9,7 +10,7 @@ using namespace std;
 
 class CommaFreeChecker: public task {
 public:
-    CommaFreeChecker(string* words, string& word, int index, int raise, int n, int k);
+    CommaFreeChecker(string* words, string word, int index, int raise, int n, int k);
     virtual ~CommaFreeChecker();
 
     task* execute();
@@ -19,7 +20,7 @@ private:
     string shiftWord(string word);
 
     string* words = 0;
-    string& word;
+    string word;
     int index;
     int raise;
     int n;
