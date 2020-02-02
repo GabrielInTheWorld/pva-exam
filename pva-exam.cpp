@@ -2,13 +2,27 @@
 //
 
 #include <iostream>
+#include <string>
 
 #include "comma-free-seq.h"
+#include "comma-free-checker.h"
+#include "comma-free-parallel.h"
+
+using namespace std;
 
 int main() {
     std::cout << "Hello World!\n";
-    
-    CommaFreeSeq cfs;
+
+    string letters = "abcdefghijklmnopqrstuvwxyz";
+    char tmp = letters[0];
+    for ( int i = 0; i < 25; i++ ) {
+
+        letters[i] = letters[i + 1];
+    }
+    letters[25] = tmp;
+    cout << letters << endl;
+
+    //CommaFreeSeq cfs;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

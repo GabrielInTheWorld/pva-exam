@@ -21,12 +21,24 @@
     <ClCompile Include="comma-free-seq.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="comma-free-parallel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="comma-free-checker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="comma-free-seq.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="comma-free-parallel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="comma-free-checker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
