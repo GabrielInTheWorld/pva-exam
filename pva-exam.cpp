@@ -29,7 +29,11 @@ int main() {
         tbb::task::spawn_root_and_wait(*root);
     }
     cout << "Finished!" << endl;
-    cout << "Words: " << words << endl;
+    //cout << "Words: " << words << endl;
+    for ( int i = 0; i < words.length() - k; i += k ) {
+        cout << words.substr(i, k) << endl;
+    }
+    //cout << (false && false) << endl;
 
     //CommaFreeSeq cfs;
 }

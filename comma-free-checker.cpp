@@ -9,8 +9,6 @@ CommaFreeChecker::~CommaFreeChecker() {}
 
 task* CommaFreeChecker::execute() {
     word[index] += raise;
-    cout << index << "\t" << raise << "\t" << word << endl;
-    //cout << *words << endl;
     if ( !contains(word) && !checkIfPeriodic(word) ) {
         words->append(word);
     }
@@ -40,7 +38,16 @@ task* CommaFreeChecker::execute() {
 
 bool CommaFreeChecker::checkIfPeriodic(string word) {
     int MIDDLE = k / 2;
-    return word.substr(0, MIDDLE) == word.substr(MIDDLE);
+    bool isPeriodic = true;
+    for ( int i = 2; i < MIDDLE + 1; ++i ) {
+        string substr = word.substr(0, i);
+        int subLength = (int)substr.length();
+        for ( int j = 1; j < k / subLength; ++j ) {
+            isPeriodic = isPeriodic && substr == word.substr(subLength, i);
+            substr = word.substr(subLength, i);
+        }
+    }
+    return isPeriodic;
 }
 
 bool CommaFreeChecker::contains(string word) {
