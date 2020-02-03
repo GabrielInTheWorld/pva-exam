@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <vector>
 #include <tbb/task.h>
 #include <tbb/parallel_for.h>
 
@@ -16,6 +17,8 @@ public:
     task* execute();
 private:
     bool checkIfPeriodic(string word);
+    bool checkIfCyclical(string word);
+    void checkContaining(string word);
     bool contains(string word);
     string shiftWord(string word);
 

@@ -9,7 +9,7 @@ CommaFreeChecker::~CommaFreeChecker() {}
 
 task* CommaFreeChecker::execute() {
     word[index] += raise;
-    if ( !contains(word) && !checkIfPeriodic(word) ) {
+    if ( !checkIfPeriodic(word) && !checkIfCyclical(word) ) {
         words->append(word);
     }
     if ( index == k - 1 ) {
@@ -50,8 +50,23 @@ bool CommaFreeChecker::checkIfPeriodic(string word) {
     return isPeriodic;
 }
 
+bool CommaFreeChecker::checkIfCyclical(string word) {
+    bool cyclical = false;
+    for ( int i = 0; i < k; ++i ) {
+        if ( contains(word) ) {
+            cyclical = true;
+            break;
+        }
+        rotate(word.begin(), word.begin() + 1, word.end());
+    }
+    return cyclical;
+}
+
+void CommaFreeChecker::checkContaining(string word) {
+
+}
+
 bool CommaFreeChecker::contains(string word) {
-    //string tmpWords = *words;
     return words->find(word) != string::npos;
 }
 

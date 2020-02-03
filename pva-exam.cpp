@@ -1,6 +1,7 @@
 // pva-exam.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#include <vector>
 #include <iostream>
 #include <string>
 #include <tbb/task.h>
@@ -13,9 +14,7 @@ using namespace std;
 using namespace tbb;
 
 int main() {
-    std::cout << "Hello World!\n";
-
-    int n = 3;
+    int n = 4;
     int k = 4;
 
     string words = "";
@@ -23,17 +22,18 @@ int main() {
     for ( int i = 0; i < k; ++i ) {
         startWord.append("a");
     }
-    for ( int i = 0; i < n; ++i ) {
+    string tmpA = startWord;
+    CommaFreeChecker* rootA = new (task::allocate_root())CommaFreeChecker(&words, tmpA, 0, 0, n, k);
+    tbb::task::spawn_root_and_wait(*rootA);
+    for ( int i = n - 1; i > 0; --i ) {
         string tmp = startWord;
         CommaFreeChecker* root = new (task::allocate_root())CommaFreeChecker(&words, tmp, 0, i, n, k);
         tbb::task::spawn_root_and_wait(*root);
     }
     cout << "Finished!" << endl;
-    //cout << "Words: " << words << endl;
     for ( int i = 0; i < words.length() - k; i += k ) {
         cout << words.substr(i, k) << endl;
     }
-    //cout << (false && false) << endl;
 
     //CommaFreeSeq cfs;
 }
