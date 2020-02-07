@@ -9,18 +9,11 @@ CommaFreeParallel::CommaFreeParallel(concurrent_vector<string>* wordList, string
     this->word = word;
 }
 
-//void CommaFreeParallel::start() {
-//    for ( int i = 0; i < pow(n, k); ++i ) {
-//
-//    }
-//
-//}
-
 task* CommaFreeParallel::execute() {
     word[index] += raise;
-    cout << "word: " << word << endl;
-    //wordList->grow_by(2);
-    wordList->push_back(word);
+    if ( !contains(*wordList, word) ) {
+        wordList->push_back(word);
+    }
 
     if ( index == k - 1 ) {
         return NULL;
@@ -32,7 +25,7 @@ task* CommaFreeParallel::execute() {
         list.push_back(*new (allocate_child())CommaFreeParallel(wordList, word, index + 1, i, n, k));
         ++count;
     };
-    parallel_for(1, n, callback);
+    parallel_for(0, n, callback);
 
     if ( count > 0 ) {
         set_ref_count(count + 1);
@@ -48,36 +41,22 @@ bool CommaFreeParallel::checkIfCommaFree() {
 
 bool CommaFreeParallel::checkIfCyclical(string word) {
     bool cyclical = false;
-    for ( int i = 0; i < k; ++i ) {
-        //word = shiftWord(word);
-        if ( contains(word) ) {
+   /* for ( int i = 0; i < k; ++i ) {
+        if ( contains(NULL, word) ) {
             cyclical = true;
             break;
         }
-    }
+    }*/
     return cyclical;
 }
 
-bool CommaFreeParallel::contains(string word) {
-    //return words.find(word) != string::npos;
-    return false;
+bool CommaFreeParallel::contains(concurrent_vector<string> list, string word) {
+    return find(list.begin(), list.end(), word) != list.end();
 }
 
 bool CommaFreeParallel::checkIfPeriodic() {
     return false;
 }
 
-//string CommaFreeParallel::shiftWord(string word) {
-//    int length = k - 1;
-//    word[length] = word[0];
-//    for ( int i = 0; i < length; ++i ) {
-//        word[i] = word[i + 1];
-//    }
-//    return word;
-//}
-
 void CommaFreeParallel::addWord() {
 }
-
-//void CommaFreeParallel::addToWordList() {
-//}

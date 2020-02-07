@@ -4,19 +4,34 @@ concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>*
     this->k = k;
 
     auto tmp = *wordList;
+    set<string> setCodeWords;
     for ( int i = 0; i < tmp.size(); ++i ) {
         string word = tmp[i];
-        //cout << word << " cyclical? " << checkIfCyclical(word) << endl;
-        //cout << word << " period? " << checkIfPeriod(word) << endl;
-        string code = joinString(resultList);
-        if ( !checkIfCyclical(code, word) && !checkIfPeriod(word) && checkIfAppendingIsAllowed(code, word) ) {
-            resultList.push_back(word);
+        //string code = joinString(resultList);
+        //if ( !checkIfCyclical(code, word) && !checkIfPeriod(word) && checkIfAppendingIsAllowed(code, word) ) {
+            //resultList.push_back(word);
+        //}
+        if ( !checkIfPeriod(word) ) {
+            //resultList.push_back(word);
+            setCodeWords.insert(word);
         }
     }
 
-    for ( auto item : resultList ) {
-        cout << "item: " << item << endl;
+    int solutions = 0;
+    int maximumCodeWords = setCodeWords.size() / k;
+    cout << "MaximumCodeWords: " << maximumCodeWords << endl;
+    string code = "";
+    task_list roots;
+    for ( int i = 0; i < setCodeWords.size(); ++i ) {
+        string firstWord = *next(setCodeWords.begin(), i);
+        CommaFreeTask* root = new(task::allocate_root())CommaFreeTask(setCodeWords, code, firstWord, maximumCodeWords, k, solutions);
+        roots.push_back(*root);
     }
+    task::spawn_root_and_wait(roots);
+
+    //for ( auto item : setCodeWords ) {
+        //cout << "item: " << item << endl;
+    //}
 
     return resultList;
 }
@@ -64,7 +79,6 @@ bool Builder::codeContains(string code, string word) {
 
 bool Builder::listContains(string word) {
     return find(resultList.begin(), resultList.end(), word) != resultList.end();
-    //return binary_search(resultList.begin(), resultList.end(), word);
 }
 
 bool Builder::checkIfAppendingIsAllowed(string code, string word) {

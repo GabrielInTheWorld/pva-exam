@@ -2,7 +2,11 @@
 
 #include <iostream>
 #include <string>
+#include <set>
+#include <tbb/task.h>
 #include <tbb/concurrent_vector.h>
+
+#include "comma-free-task.h"
 
 using namespace tbb;
 using namespace std;

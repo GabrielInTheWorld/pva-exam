@@ -17,7 +17,7 @@ public:
 private:
     bool checkIfCommaFree();
     bool checkIfCyclical(string word);
-    bool contains(string word);
+    bool contains(concurrent_vector<string> list, string word);
     bool checkIfPeriodic();
     //string shiftWord(string word);
     void addWord();
