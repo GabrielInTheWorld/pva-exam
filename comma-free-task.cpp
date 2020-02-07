@@ -1,27 +1,19 @@
-#include "builder.h"
+#include "comma-free-task.h"
 
-concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>* wordList, int k) {
+CommaFreeTask::CommaFreeTask(concurrent_vector<string> wordList, string code, string wordToAppend, int maximumCodeWords, int k) {
+    this->wordList = wordList;
+    this->code = code;
+    this->wordToAppend = wordToAppend;
+    this->maximumCodeWords = maximumCodeWords;
     this->k = k;
-
-    auto tmp = *wordList;
-    for ( int i = 0; i < tmp.size(); ++i ) {
-        string word = tmp[i];
-        //cout << word << " cyclical? " << checkIfCyclical(word) << endl;
-        //cout << word << " period? " << checkIfPeriod(word) << endl;
-        string code = joinString(resultList);
-        if ( !checkIfCyclical(code, word) && !checkIfPeriod(word) && checkIfAppendingIsAllowed(code, word) ) {
-            resultList.push_back(word);
-        }
-    }
-
-    for ( auto item : resultList ) {
-        cout << "item: " << item << endl;
-    }
-
-    return resultList;
 }
 
-bool Builder::checkIfCyclical(string code, string word) {
+task* CommaFreeTask::execute() {
+    
+    return NULL;
+}
+
+bool CommaFreeTask::checkIfCyclical(string code, string word) {
     bool cyclical = false;
     for ( int i = 0; i < k; ++i ) {
         if ( codeContains(code, word) ) {
@@ -33,9 +25,10 @@ bool Builder::checkIfCyclical(string code, string word) {
     return cyclical;
 }
 
-bool Builder::checkIfPeriod(string word) {
+bool CommaFreeTask::checkIfPeriod(string word) {
     int MIDDLE = k / 2;
     bool isPeriodic = true;
+
     if ( k % 2 == 1 ) {
         char letter = word[0];
         for ( int i = 1; i < word.size(); ++i ) {
@@ -58,16 +51,11 @@ bool Builder::checkIfPeriod(string word) {
     return isPeriodic;
 }
 
-bool Builder::codeContains(string code, string word) {
+bool CommaFreeTask::codeContains(string code, string word) {
     return code.find(word) != string::npos;
 }
 
-bool Builder::listContains(string word) {
-    return find(resultList.begin(), resultList.end(), word) != resultList.end();
-    //return binary_search(resultList.begin(), resultList.end(), word);
-}
-
-bool Builder::checkIfAppendingIsAllowed(string code, string word) {
+bool CommaFreeTask::checkIfAppendingIsAllowed(string code, string word) {
     string result = code + word;
     bool isAllowed = true;
     int codeSize = result.size();
@@ -79,10 +67,4 @@ bool Builder::checkIfAppendingIsAllowed(string code, string word) {
         }
     }
     return isAllowed;
-}
-
-string Builder::joinString(concurrent_vector<string> list) {
-    string joinedString = "";
-    for ( const auto& item : list ) joinedString += item;
-    return joinedString;
 }

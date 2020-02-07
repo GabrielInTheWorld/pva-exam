@@ -180,6 +180,7 @@
     <ClCompile Include="comma-free-parallel.cpp" />
     <ClCompile Include="comma-free-scheduler.cpp" />
     <ClCompile Include="comma-free-seq.cpp" />
+    <ClCompile Include="comma-free-task.cpp" />
     <ClCompile Include="pva-exam.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +192,7 @@
     <ClInclude Include="comma-free-parallel.h" />
     <ClInclude Include="comma-free-scheduler.h" />
     <ClInclude Include="comma-free-seq.h" />
+    <ClInclude Include="comma-free-task.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="word-list.txt" />

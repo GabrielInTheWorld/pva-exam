@@ -21,7 +21,7 @@ int main() {
     //task_scheduler_init my_task(4);
     int threadAmount = 4;
     int n = 3;
-    int k = 4;
+    int k = 3;
     CommaFreeScheduler scheduler(n, k, threadAmount);
     scheduler.startCommaFreeParallel();
 
