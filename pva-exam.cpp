@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 #include <tbb/task.h>
+#include <tbb/tick_count.h>
+#include <tbb/task_scheduler_init.h>
 
 #include "comma-free-seq.h"
 #include "comma-free-checker.h"
@@ -14,26 +16,49 @@ using namespace std;
 using namespace tbb;
 
 int main() {
-    int n = 4;
-    int k = 4;
+    task_scheduler_init my_task(8);
+    int n = 5;
+    int k = 6;
 
     string words = "";
     string startWord = "";
     for ( int i = 0; i < k; ++i ) {
         startWord.append("a");
     }
+    cout << "Start!" << endl;
+    tick_count t0 = tick_count::now();
+    task_list list;
+
     string tmpA = startWord;
-    CommaFreeChecker* rootA = new (task::allocate_root())CommaFreeChecker(&words, tmpA, 0, 0, n, k);
-    tbb::task::spawn_root_and_wait(*rootA);
-    for ( int i = n - 1; i > 0; --i ) {
+    concurrent_vector<string>* wordList = new concurrent_vector<string>();
+    /*CommaFreeChecker* rootA = new (task::allocate_root())CommaFreeChecker(wordList, tmpA, 0, 0, n, k);
+    list.push_back(*rootA);*/
+    //tbb::task::spawn_root_and_wait(*root);
+    for ( int i = n - 1; i >= 0; --i ) {
         string tmp = startWord;
-        CommaFreeChecker* root = new (task::allocate_root())CommaFreeChecker(&words, tmp, 0, i, n, k);
-        tbb::task::spawn_root_and_wait(*root);
+        CommaFreeChecker* root = new (task::allocate_root())CommaFreeChecker(wordList, tmp, 0, i, n, k);
+        //tbb::task::spawn_root_and_wait(*root);
+        list.push_back(*root);
     }
+    task::spawn_root_and_wait(list);
+    tick_count t1 = tick_count::now();
     cout << "Finished!" << endl;
-    for ( int i = 0; i < words.length() - k; i += k ) {
-        cout << words.substr(i, k) << endl;
+    cout << "word: " << words.length() << endl;
+    //cout << "wordList: " << *wordList << endl;
+    int length = 0;
+    //for ( int i = 0; i < words.length() - k; i += k ) {
+    //    //cout << words.substr(i, k) << endl;
+    //    ++length;
+    //}
+    cout << "wordList: " << endl;
+    auto tmpList = *wordList;
+    for ( int i = 0; i < tmpList.size() - k; i += k ) {
+        //cout << tmpList[i];
+        ++length;
     }
+    cout << endl;
+    cout << "Time needed: " << (t1 - t0).seconds() << endl;
+    cout << "Commafree words: " << length << endl;
 
     //CommaFreeSeq cfs;
 }
