@@ -12,8 +12,8 @@ using namespace tbb;
 int main() {
 
     int threadAmount = 4;
-    int n = 3;
-    int k = 3;
+    int n = 4;
+    int k = 2;
     CommaFreeScheduler scheduler(n, k, threadAmount);
     scheduler.startCommaFreeParallel();
     //CommaFreeSeq cfs;

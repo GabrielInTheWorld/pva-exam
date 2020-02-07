@@ -12,7 +12,7 @@ using namespace std;
 
 class CommaFreeTask: public task {
 public:
-    CommaFreeTask(set<string> wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions);
+    CommaFreeTask(set<string> wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions, bool* isFinished);
     task* execute();
 
 private:
@@ -27,5 +27,6 @@ private:
     int k = 0;
     string code = "";
     string wordToAppend = "";
+    bool* isFinished;
     set<string> wordList;
 };

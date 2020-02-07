@@ -1,16 +1,17 @@
 #include "comma-free-task.h"
 
-CommaFreeTask::CommaFreeTask(set<string> wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions) {
+CommaFreeTask::CommaFreeTask(set<string> wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions, bool* isFinished) {
     this->wordList = wordList;
     this->code = code;
     this->wordToAppend = wordToAppend;
     this->maximumCodeWords = maximumCodeWords;
     this->k = k;
     this->solutions = solutions;
+    this->isFinished = isFinished;
 }
 
 task* CommaFreeTask::execute() {
-    if ( this->is_cancelled() ) {
+    if ( *isFinished ) {
         return NULL;
     }
     //cout << "isCyclical? " << checkIfCyclical(code, wordToAppend) << endl;
@@ -23,8 +24,8 @@ task* CommaFreeTask::execute() {
         ++solutions;
         
         if ( solutions == maximumCodeWords ) {
-            cout << "Solution found with " << solutions << " CodeWords." << endl;
-            this->cancel_group_execution();
+            cout << "Solution found with " << solutions << " CodeWords: " << nextCode << endl;
+            *isFinished = true;
             return NULL;
         }
 
@@ -33,7 +34,7 @@ task* CommaFreeTask::execute() {
         for ( int i = 0; i < wordList.size(); ++i ) {
             string nextWordToAppend = *next(wordList.begin(), i);
             int solution = solutions;
-            CommaFreeTask* child = new(allocate_child())CommaFreeTask(wordList, nextCode, nextWordToAppend, maximumCodeWords, k, solution);
+            CommaFreeTask* child = new(allocate_child())CommaFreeTask(wordList, nextCode, nextWordToAppend, maximumCodeWords, k, solution, isFinished);
             children.push_back(*child);
             ++count;
         }

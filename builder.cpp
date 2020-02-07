@@ -21,10 +21,11 @@ concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>*
     int maximumCodeWords = setCodeWords.size() / k;
     cout << "MaximumCodeWords: " << maximumCodeWords << endl;
     string code = "";
+    bool isFinished = false;
     task_list roots;
     for ( int i = 0; i < setCodeWords.size(); ++i ) {
         string firstWord = *next(setCodeWords.begin(), i);
-        CommaFreeTask* root = new(task::allocate_root())CommaFreeTask(setCodeWords, code, firstWord, maximumCodeWords, k, solutions);
+        CommaFreeTask* root = new(task::allocate_root())CommaFreeTask(setCodeWords, code, firstWord, maximumCodeWords, k, solutions, &isFinished);
         roots.push_back(*root);
     }
     task::spawn_root_and_wait(roots);
