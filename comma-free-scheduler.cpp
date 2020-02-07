@@ -16,6 +16,7 @@ CommaFreeScheduler::~CommaFreeScheduler() {
 }
 
 void CommaFreeScheduler::startCommaFreeParallel() {
+    tick_count c0 = tick_count::now();
     string startWord = initWord();
 
     /*wordList->push_back(startWord);
@@ -36,6 +37,8 @@ void CommaFreeScheduler::startCommaFreeParallel() {
     evaluate(list);
     Builder builder;
     auto resultList = builder.buildCommaFreeList(wordList, k);
+    tick_count c1 = tick_count::now();
+    cout << "Time needed: " << (c1 - c0).seconds() << endl;
 }
 
 void CommaFreeScheduler::startCommaFreeChecker() {
@@ -67,13 +70,13 @@ void CommaFreeScheduler::evaluate(task_list& list) {
     task::spawn_root_and_wait(list);
     tick_count t1 = tick_count::now();
 
-    cout << "Finished!" << endl;
-    cout << "wordList: " << endl;
+    //cout << "Finished!" << endl;
+    //cout << "wordList: " << endl;
     auto tmpList = *wordList;
-    for ( int i = 0; i < tmpList.size(); ++i ) {
+   /* for ( int i = 0; i < tmpList.size(); ++i ) {
         cout << i << ": " << tmpList[i] << endl;
-    }
+    }*/
     cout << endl;
-    cout << "Time needed: " << (t1 - t0).seconds() << endl;
-    cout << "Commafree words: " << wordList->size() << endl;
+    //cout << "Time needed: " << (t1 - t0).seconds() << endl;
+    cout << "All words: " << wordList->size() << endl;
 }

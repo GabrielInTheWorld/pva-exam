@@ -16,7 +16,7 @@ task* CommaFreeTask::execute() {
     }
     //cout << "isCyclical? " << checkIfCyclical(code, wordToAppend) << endl;
     //cout << "appendingIsAllowed? " << checkIfAppendingIsAllowed(code, wordToAppend) << endl;
-    if ( !codeContains(code, wordToAppend) && checkIfAppendingIsAllowed(code, wordToAppend) ) {
+    if ( !checkIfCyclical(code, wordToAppend) && checkIfAppendingIsAllowed(code, wordToAppend) ) {
         //cout << "Code: " << code << " - wordToAppend: " << wordToAppend << endl;
         string nextCode = code + wordToAppend;
         //wordList.erase(wordToAppend);

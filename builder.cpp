@@ -6,6 +6,7 @@ concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>*
     auto tmp = *wordList;
     set<string> setCodeWords;
     for ( int i = 0; i < tmp.size(); ++i ) {
+        //cout << "code-word: " << tmp[i] << endl;
         string word = tmp[i];
         //string code = joinString(resultList);
         //if ( !checkIfCyclical(code, word) && !checkIfPeriod(word) && checkIfAppendingIsAllowed(code, word) ) {
@@ -30,9 +31,10 @@ concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>*
     }
     task::spawn_root_and_wait(roots);
 
-    //for ( auto item : setCodeWords ) {
-        //cout << "item: " << item << endl;
-    //}
+    /*for ( auto item : setCodeWords ) {
+        cout << "item: " << item << endl;
+    }
+    cout << "setCodeWords.size(): " << setCodeWords.size() << endl;*/
 
     return resultList;
 }
@@ -64,11 +66,15 @@ bool Builder::checkIfPeriod(string word) {
     }
 
     for ( int i = 1; i < MIDDLE + 1; ++i ) {
+        isPeriodic = true;
         string substr = word.substr(0, i);
         int subLength = (int)substr.length();
         for ( int j = 1; j < k / subLength; ++j ) {
-            isPeriodic = isPeriodic && substr == word.substr(subLength, i);
-            substr = word.substr(subLength, i);
+            isPeriodic = isPeriodic && substr == word.substr(subLength*j, i);
+            substr = word.substr(subLength*j, i);
+        }
+        if ( isPeriodic ) {
+            break;
         }
     }
     return isPeriodic;
