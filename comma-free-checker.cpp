@@ -57,7 +57,7 @@ task* CommaFreeChecker::execute() {
         //mutex.lock();
         //cout << "Increase size" << endl;
 
-        tmpList->grow_by(2);
+        tmpList->grow_by(1);
 
         //cout << "Append word" << endl;
         //words->append(code);

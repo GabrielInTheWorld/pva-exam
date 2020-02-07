@@ -175,8 +175,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="builder.cpp" />
     <ClCompile Include="comma-free-checker.cpp" />
     <ClCompile Include="comma-free-parallel.cpp" />
+    <ClCompile Include="comma-free-scheduler.cpp" />
     <ClCompile Include="comma-free-seq.cpp" />
     <ClCompile Include="pva-exam.cpp" />
   </ItemGroup>
@@ -184,8 +186,10 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="builder.h" />
     <ClInclude Include="comma-free-checker.h" />
     <ClInclude Include="comma-free-parallel.h" />
+    <ClInclude Include="comma-free-scheduler.h" />
     <ClInclude Include="comma-free-seq.h" />
   </ItemGroup>
   <ItemGroup>
