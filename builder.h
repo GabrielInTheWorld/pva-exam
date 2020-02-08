@@ -17,7 +17,8 @@ public:
 
 private:
     bool checkIfCyclical(string code, string word);
-    bool checkIfPeriod(string word);
+    bool checkIfPeriodOddK(string word);
+    bool checkIfPeriodEvenK(string word);
     bool codeContains(string code, string word);
     bool listContains(string word);
     bool checkIfAppendingIsAllowed(string code, string word);

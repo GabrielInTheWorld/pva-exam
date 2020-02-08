@@ -14,12 +14,8 @@ task* CommaFreeTask::execute() {
     if ( *isFinished ) {
         return NULL;
     }
-    //cout << "isCyclical? " << checkIfCyclical(code, wordToAppend) << endl;
-    //cout << "appendingIsAllowed? " << checkIfAppendingIsAllowed(code, wordToAppend) << endl;
     if ( !checkIfCyclical(code, wordToAppend) && checkIfAppendingIsAllowed(code, wordToAppend) ) {
-        //cout << "Code: " << code << " - wordToAppend: " << wordToAppend << endl;
         string nextCode = code + wordToAppend;
-        //wordList.erase(wordToAppend);
         wordList = filterCyclicalWords(wordList, wordToAppend);
         ++solutions;
         
@@ -34,7 +30,7 @@ task* CommaFreeTask::execute() {
         for ( int i = 0; i < wordList.size(); ++i ) {
             string nextWordToAppend = *next(wordList.begin(), i);
             int solution = solutions;
-            CommaFreeTask* child = new(allocate_child())CommaFreeTask(wordList, nextCode, nextWordToAppend, maximumCodeWords, k, solution, isFinished);
+            CommaFreeTask* child = new(allocate_child())CommaFreeTask(wordList, nextCode, nextWordToAppend, maximumCodeWords, k, solutions, isFinished);
             children.push_back(*child);
             ++count;
         }

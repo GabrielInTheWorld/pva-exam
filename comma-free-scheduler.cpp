@@ -5,17 +5,12 @@ CommaFreeScheduler::CommaFreeScheduler(int n, int k) {
     this->k = k;
 }
 
-CommaFreeScheduler::CommaFreeScheduler(int n, int k, int threadAmount) {
-    this->n = n;
-    this->k = k;
-    task_scheduler_init my_task(threadAmount);
-}
-
 CommaFreeScheduler::~CommaFreeScheduler() {
     delete wordList;
 }
 
-void CommaFreeScheduler::startCommaFreeParallel() {
+void CommaFreeScheduler::startCommaFreeParallel(int numberCores) {
+    task_scheduler_init my_task(numberCores);
     tick_count c0 = tick_count::now();
     string startWord = initWord();
 
@@ -33,8 +28,10 @@ void CommaFreeScheduler::startCommaFreeParallel() {
         CommaFreeParallel* root = new (task::allocate_root())CommaFreeParallel(wordList, tmp, 0, i, n, k);
         list.push_back(*root);
     }
+    task::spawn_root_and_wait(list);
+    cout << "Number of all words: " << wordList->size() << endl;
 
-    evaluate(list);
+    //evaluate(list);
     Builder builder;
     auto resultList = builder.buildCommaFreeList(wordList, k);
     tick_count c1 = tick_count::now();
@@ -76,7 +73,7 @@ void CommaFreeScheduler::evaluate(task_list& list) {
    /* for ( int i = 0; i < tmpList.size(); ++i ) {
         cout << i << ": " << tmpList[i] << endl;
     }*/
-    cout << endl;
+    //cout << endl;
     //cout << "Time needed: " << (t1 - t0).seconds() << endl;
-    cout << "All words: " << wordList->size() << endl;
+    cout << "Number of all words: " << wordList->size() << endl;
 }

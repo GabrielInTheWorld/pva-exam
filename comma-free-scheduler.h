@@ -19,9 +19,8 @@ using namespace tbb;
 class CommaFreeScheduler {
 public:
     CommaFreeScheduler(int n, int k);
-    CommaFreeScheduler(int n, int k, int threadAmount);
     virtual ~CommaFreeScheduler();
-    void startCommaFreeParallel();
+    void startCommaFreeParallel(int numberCores);
     void startCommaFreeChecker();
 
 private:

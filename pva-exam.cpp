@@ -11,11 +11,11 @@ using namespace tbb;
 
 int main() {
 
-    int threadAmount = 4;
-    int n = 2;
+    int numberCores = 4;
+    int n = 1;
     int k = 6;
-    CommaFreeScheduler scheduler(n, k, threadAmount);
-    scheduler.startCommaFreeParallel();
+    CommaFreeScheduler scheduler(n, k);
+    scheduler.startCommaFreeParallel(numberCores);
     //CommaFreeSeq cfs;
 }
 
