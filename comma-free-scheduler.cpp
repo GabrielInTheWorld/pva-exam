@@ -10,7 +10,10 @@ CommaFreeScheduler::~CommaFreeScheduler() {
 }
 
 void CommaFreeScheduler::startCommaFreeParallel(int numberCores) {
+    cout << "Run task for n: " << n << endl;
+    cout << "With k: " << k << endl;
     task_scheduler_init my_task(numberCores);
+    cout << "Using #" << (numberCores > 0 ? numberCores : my_task.default_num_threads()) << " cores." << endl;
     tick_count c0 = tick_count::now();
     string startWord = initWord();
 

@@ -27,7 +27,6 @@ CommaFreeChecker::~CommaFreeChecker() {
 
 task* CommaFreeChecker::execute() {
     //cout << "init" << endl;
-    mutex mutex;
     //vector<string> tmpList = wordList;
     //int tmpIndex = index;
 
