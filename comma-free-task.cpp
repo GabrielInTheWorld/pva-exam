@@ -1,6 +1,6 @@
 #include "comma-free-task.h"
 
-CommaFreeTask::CommaFreeTask(con_set wordList, string code, string wordToAppend, const int& maximumCodeWords, int k, int solutions, task_group_context* group): maximumCodeWords(maximumCodeWords) {
+CommaFreeTask::CommaFreeTask(con_set wordList, string code, string wordToAppend, const int& maximumCodeWords, const int& k, int solutions, task_group_context* group): maximumCodeWords(maximumCodeWords) {
     this->wordList = wordList;
     this->code = code;
     this->wordToAppend = wordToAppend;
@@ -8,6 +8,8 @@ CommaFreeTask::CommaFreeTask(con_set wordList, string code, string wordToAppend,
     this->solutions = solutions;
     this->group = group;
 }
+
+CommaFreeTask::CommaFreeTask(const con_set* wordList, const concurrent_vector<bool> wordListIndices, concurrent_vector<unsigned int> indices, unsigned int nextIndex, const int& maximumCodeWords, const int& k, int solutions, task_group_context* group) {}
 
 task* CommaFreeTask::execute() {
     if ( group->is_group_execution_cancelled() ) {

@@ -18,7 +18,7 @@ typedef concurrent_unordered_set<string> con_set;
 class Builder {
 public:
     ~Builder();
-    concurrent_vector<string> buildCommaFreeList(concurrent_vector<string>* wordList, int k);
+    concurrent_vector<string> buildCommaFreeList(concurrent_vector<string>* wordList, const int& k);
 
 private:
     con_set insertWordsEvenK(const concurrent_vector<string>& wordList);

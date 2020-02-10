@@ -4,7 +4,7 @@ Builder::~Builder() {
     delete context;
 }
 
-concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>* wordList, int k) {
+concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>* wordList, const int& k) {
     this->k = k;
 
     con_set setCodeWords = k % 2 == 0 ? insertWordsEvenK(*wordList) : insertWordsOddK(*wordList);
