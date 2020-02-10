@@ -4,13 +4,7 @@ concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>*
     this->k = k;
 
     auto tmp = *wordList;
-    set<string> setCodeWords;
-    for ( int i = 0; i < tmp.size(); ++i ) {
-        string word = tmp[i];
-        if ( k % 2 == 0 ? !checkIfPeriodEvenK(word) : !checkIfPeriodOddK(word) ) {
-            setCodeWords.insert(word);
-        }
-    }
+    con_set setCodeWords = k % 2 == 0 ? insertWordsEvenK(tmp) : insertWordsOddK(tmp);
 
     int solutions = 0;
     int maximumCodeWords = setCodeWords.size() / k;
@@ -23,21 +17,44 @@ concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>*
         CommaFreeTask* root = new(task::allocate_root())CommaFreeTask(setCodeWords, code, firstWord, maximumCodeWords, k, solutions, &isFinished);
         roots.push_back(*root);
     }
+    //task::spawn_root_and_wait(roots);
+
+    //auto callback = [&](int begin, int end) {
+    //    for ( int i = begin; i < end; ++i ) {
+    //        string firstWord = *next(setCodeWords.begin(), i);
+    //        CommaFreeTask* root = new(task::allocate_root())CommaFreeTask(setCodeWords, code, firstWord, maximumCodeWords, k, solutions, &isFinished);
+    //        roots.push_back(*root);
+    //    }
+    //};
+    //parallel_invoke()
     task::spawn_root_and_wait(roots);
 
     return resultList;
 }
 
-bool Builder::checkIfCyclical(string code, string word) {
-    bool cyclical = false;
-    for ( int i = 0; i < k; ++i ) {
-        if ( codeContains(code, word) ) {
-            cyclical = true;
-            break;
+con_set Builder::insertWordsEvenK(concurrent_vector<string> wordList) {
+    con_set result;
+    concurrent_vector<string> tmp;
+    auto callback = [&](int index) {
+        string word = wordList[index];
+        if ( !checkIfPeriodEvenK(word) ) {
+            result.insert(word);
         }
-        rotate(word.begin(), word.begin() + 1, word.end());
-    }
-    return cyclical;
+    };
+    parallel_for(0, (int)wordList.size(), callback);
+    return result;
+}
+
+con_set Builder::insertWordsOddK(concurrent_vector<string> wordList) {
+    con_set result;
+    auto callback = [&](int index) {
+        string word = wordList[index];
+        if ( !checkIfPeriodOddK(word) ) {
+            result.insert(word);
+        }
+    };
+    parallel_for(0, (int)wordList.size(), callback);
+    return result;
 }
 
 bool Builder::checkIfPeriodOddK(string word) {
@@ -63,41 +80,17 @@ bool Builder::checkIfPeriodEvenK(string word) {
         isPeriodic = true;
         string substr = word.substr(0, i);
         int subLength = (int)substr.length();
-        for ( int j = 1; j < k / subLength; ++j ) {
+        /*for ( int j = 1; j < k / subLength; ++j ) {
             isPeriodic = isPeriodic && substr == word.substr(subLength * j, i);
             substr = word.substr(subLength * j, i);
-        }
+        }*/
+        auto callback = [&](int index) {
+            isPeriodic = isPeriodic && substr == word.substr(subLength * index, i);
+        };
+        parallel_for(1, k / subLength, callback);
         if ( isPeriodic ) {
             break;
         }
     }
     return isPeriodic;
-}
-
-bool Builder::codeContains(string code, string word) {
-    return code.find(word) != string::npos;
-}
-
-bool Builder::listContains(string word) {
-    return find(resultList.begin(), resultList.end(), word) != resultList.end();
-}
-
-bool Builder::checkIfAppendingIsAllowed(string code, string word) {
-    string result = code + word;
-    bool isAllowed = true;
-    int codeSize = result.size();
-    for ( int i = 1; i < k && codeSize > k; ++i ) {
-        string substring = result.substr(codeSize - k - i, k);
-        if ( codeContains(code, substring) ) {
-            isAllowed = false;
-            break;
-        }
-    }
-    return isAllowed;
-}
-
-string Builder::joinString(concurrent_vector<string> list) {
-    string joinedString = "";
-    for ( const auto& item : list ) joinedString += item;
-    return joinedString;
 }

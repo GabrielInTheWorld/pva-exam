@@ -23,20 +23,27 @@ int main(int argc, char** argv) {
     /*for ( int i = 0; i < argc; ++i ) {
         cout << "argv[" << i << "]: " << atoi(argv[i]) << endl;
     }*/
+    int numberCores = task_scheduler_init::automatic;
+    int n = 2;
+    int k = 6;
 
     if ( argc < 3 ) {
-        cout << "You have to enter arguments for n k #cores" << endl;
-        return 0;
+        cout << "Warning: You have to enter arguments for n k #cores" << endl;
+    } else {
+        if ( argc == 4 ) {
+            cout << "Entered: " << argv[3] << " cores to be used." << endl;
+            numberCores = atoi(argv[3]);
+        }
+
+        //n = readArgument(atoi(argv[1]), 2);
+        //k = readArgument(atoi(argv[2]), 6);
+        n = atoi(argv[1]);
+        k = atoi(argv[2]);
     }
 
-    int numberCores = task_scheduler_init::automatic;
-    if ( argc == 4 ) {
-        cout << "Entered: " << argv[3] << " cores to be used." << endl;
-        numberCores = atoi(argv[3]);
-    }
-
-    int n = readArgument(atoi(argv[1]), 2);
-    int k = readArgument(atoi(argv[2]), 6);
+    //int n = 2;
+    //int k = 5;
+    //int numberCores = 8;
     CommaFreeScheduler scheduler(n, k);
     scheduler.startCommaFreeParallel(numberCores);
     //CommaFreeSeq cfs;

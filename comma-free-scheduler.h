@@ -9,9 +9,9 @@
 #include <tbb/parallel_for.h>
 #include <tbb/concurrent_vector.h>
 
-#include "comma-free-checker.h"
 #include "comma-free-parallel.h"
 #include "builder.h"
+#include "writer.h"
 
 using namespace std;
 using namespace tbb;
@@ -21,11 +21,12 @@ public:
     CommaFreeScheduler(int n, int k);
     virtual ~CommaFreeScheduler();
     void startCommaFreeParallel(int numberCores);
-    void startCommaFreeChecker();
+    //void startCommaFreeChecker();
 
 private:
     string initWord();
     void evaluate(task_list& list);
+    void writeSolution(string solutionCode, int numberCores, double seconds);
 
     concurrent_vector<string>* wordList = new concurrent_vector<string>();
     int n = 0;

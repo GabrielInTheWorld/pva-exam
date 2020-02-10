@@ -36,6 +36,12 @@
     <ClCompile Include="comma-free-task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="writer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="singleton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -59,10 +65,18 @@
     <ClInclude Include="comma-free-task.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="writer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="singleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="word-list.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="makefile2" />
+    <Text Include="makefile" />
   </ItemGroup>
 </Project>

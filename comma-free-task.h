@@ -6,21 +6,25 @@
 #include <tbb/task.h>
 #include <tbb/parallel_for.h>
 #include <tbb/concurrent_vector.h>
+#include <tbb/concurrent_unordered_set.h>
+
+#include "writer.h"
 
 using namespace tbb;
 using namespace std;
 
+typedef concurrent_unordered_set<string> con_set;
+
 class CommaFreeTask: public task {
 public:
-    CommaFreeTask(set<string> wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions, bool* isFinished);
+    CommaFreeTask(con_set wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions, bool* isFinished);
     task* execute();
 
 private:
     bool checkIfCyclical(string code, string word);
-    bool checkIfPeriod(string word);
     bool codeContains(string code, string word);
     bool checkIfAppendingIsAllowed(string code, string word);
-    set<string> filterCyclicalWords(set<string> list, string word);
+    con_set filterCyclicalWords(con_set list, string word);
 
     int solutions;
     int maximumCodeWords = 0;
@@ -28,5 +32,5 @@ private:
     string code = "";
     string wordToAppend = "";
     bool* isFinished;
-    set<string> wordList;
+    con_set wordList;
 };

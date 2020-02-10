@@ -1,6 +1,6 @@
 #include "comma-free-task.h"
 
-CommaFreeTask::CommaFreeTask(set<string> wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions, bool* isFinished) {
+CommaFreeTask::CommaFreeTask(con_set wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions, bool* isFinished) {
     this->wordList = wordList;
     this->code = code;
     this->wordToAppend = wordToAppend;
@@ -18,6 +18,8 @@ task* CommaFreeTask::execute() {
         string nextCode = code + wordToAppend;
         wordList = filterCyclicalWords(wordList, wordToAppend);
         ++solutions;
+        //writer::getInstance()->setDictionary(nextCode);
+        writer::setDictionary(nextCode);
         
         if ( solutions == maximumCodeWords ) {
             cout << "Solution found with " << solutions << " CodeWords: " << nextCode << endl;
@@ -27,13 +29,13 @@ task* CommaFreeTask::execute() {
 
         task_list children;
         int count = 0;
-        for ( int i = 0; i < wordList.size(); ++i ) {
-            string nextWordToAppend = *next(wordList.begin(), i);
-            int solution = solutions;
+        auto callback = [&](int index) {
+            string nextWordToAppend = *next(wordList.begin(), index);
             CommaFreeTask* child = new(allocate_child())CommaFreeTask(wordList, nextCode, nextWordToAppend, maximumCodeWords, k, solutions, isFinished);
             children.push_back(*child);
             ++count;
-        }
+        };
+        parallel_for(0, (int)wordList.size(), callback);
 
         if ( count > 0 ) {
             set_ref_count(count + 1);
@@ -57,32 +59,6 @@ bool CommaFreeTask::checkIfCyclical(string code, string word) {
     return cyclical;
 }
 
-bool CommaFreeTask::checkIfPeriod(string word) {
-    int MIDDLE = k / 2;
-    bool isPeriodic = true;
-
-    if ( k % 2 == 1 ) {
-        char letter = word[0];
-        for ( int i = 1; i < word.size(); ++i ) {
-            if ( word[i] != letter ) {
-                isPeriodic = false;
-                break;
-            }
-        }
-        return isPeriodic;
-    }
-
-    for ( int i = 1; i < MIDDLE + 1; ++i ) {
-        string substr = word.substr(0, i);
-        int subLength = (int)substr.length();
-        for ( int j = 1; j < k / subLength; ++j ) {
-            isPeriodic = isPeriodic && substr == word.substr(subLength, i);
-            substr = word.substr(subLength, i);
-        }
-    }
-    return isPeriodic;
-}
-
 bool CommaFreeTask::codeContains(string code, string word) {
     return code.find(word) != string::npos;
 }
@@ -101,10 +77,16 @@ bool CommaFreeTask::checkIfAppendingIsAllowed(string code, string word) {
     return isAllowed;
 }
 
-set<string> CommaFreeTask::filterCyclicalWords(set<string> list, string word) {
+con_set CommaFreeTask::filterCyclicalWords(con_set list, string word) {
     for ( int i = 0; i < k; ++i ) {
         rotate(word.begin(), word.begin() + 1, word.end());
-        list.erase(word);
+        list.unsafe_erase(word);
     }
+    /*auto callback = [&](int index) {
+        string tmp = word;
+        rotate(tmp.begin(), tmp.begin() + 1, tmp.end());
+        list.erase(tmp);
+    };
+    parallel_for(0, k, callback);*/
     return list;
 }
