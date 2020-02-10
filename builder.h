@@ -21,10 +21,10 @@ public:
     concurrent_vector<string> buildCommaFreeList(concurrent_vector<string>* wordList, int k);
 
 private:
-    con_set insertWordsEvenK(concurrent_vector<string> wordList);
-    con_set insertWordsOddK(concurrent_vector<string> wordList);
-    bool checkIfPeriodOddK(string word);
-    bool checkIfPeriodEvenK(string word);
+    con_set insertWordsEvenK(const concurrent_vector<string>& wordList);
+    con_set insertWordsOddK(const concurrent_vector<string>& wordList);
+    bool checkIfPeriodOddK(const string& word);
+    bool checkIfPeriodEvenK(const string& word);
 
     int k = 0;
     concurrent_vector<string> resultList;

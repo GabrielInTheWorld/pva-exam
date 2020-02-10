@@ -1,13 +1,11 @@
 #include "comma-free-task.h"
 
-CommaFreeTask::CommaFreeTask(con_set wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions, bool* isFinished, task_group_context* group) {
+CommaFreeTask::CommaFreeTask(con_set wordList, string code, string wordToAppend, const int& maximumCodeWords, int k, int solutions, task_group_context* group): maximumCodeWords(maximumCodeWords) {
     this->wordList = wordList;
     this->code = code;
     this->wordToAppend = wordToAppend;
-    this->maximumCodeWords = maximumCodeWords;
     this->k = k;
     this->solutions = solutions;
-    this->isFinished = isFinished;
     this->group = group;
 }
 
@@ -24,14 +22,17 @@ task* CommaFreeTask::execute() {
     };
     parallel_invoke(checkAppending, checkCyclical);
     if (canBeAppended) {
-        string nextCode = code + wordToAppend;
-        wordList = filterCyclicalWords(wordList, wordToAppend);
-        ++solutions;
-        writer::setDictionary(nextCode);
+        code += wordToAppend;
+        auto filterWords = [&]() {
+            ++solutions;
+            writer::setDictionary(code);
+        };
+        parallel_invoke([&]() {filterCyclicalWords(wordList, wordToAppend); }, filterWords);
+        //filterCyclicalWords(wordList, wordToAppend);
         
+
         if ( solutions == maximumCodeWords ) {
-            cout << "Solution found with " << solutions << " CodeWords: " << nextCode << endl;
-            //*isFinished = true;
+            cout << "Solution found with " << solutions << " CodeWords: " << code << endl;
             group->cancel_group_execution();
             return NULL;
         }
@@ -40,7 +41,7 @@ task* CommaFreeTask::execute() {
         int count = 0;
         auto callback = [&](int index) {
             string nextWordToAppend = *next(wordList.begin(), index);
-            CommaFreeTask* child = new(allocate_child())CommaFreeTask(wordList, nextCode, nextWordToAppend, maximumCodeWords, k, solutions, isFinished, group);
+            CommaFreeTask* child = new(allocate_child())CommaFreeTask(wordList, code, nextWordToAppend, maximumCodeWords, k, solutions, group);
             children.push_back(*child);
             ++count;
         };
@@ -56,7 +57,7 @@ task* CommaFreeTask::execute() {
     return NULL;
 }
 
-bool CommaFreeTask::checkIfCyclical(string code, string word) {
+bool CommaFreeTask::checkIfCyclical(const string& code, string word) {
     bool cyclical = false;
     for ( int i = 0; i < k; ++i ) {
         if ( codeContains(code, word) ) {
@@ -68,11 +69,11 @@ bool CommaFreeTask::checkIfCyclical(string code, string word) {
     return cyclical;
 }
 
-bool CommaFreeTask::codeContains(string code, string word) {
+bool CommaFreeTask::codeContains(const string& code, const string& word) {
     return code.find(word) != string::npos;
 }
 
-bool CommaFreeTask::checkIfAppendingIsAllowed(string code, string word) {
+bool CommaFreeTask::checkIfAppendingIsAllowed(const string& code, string word) {
     string result = code + word;
     bool isAllowed = true;
     int codeSize = result.size();
@@ -86,10 +87,9 @@ bool CommaFreeTask::checkIfAppendingIsAllowed(string code, string word) {
     return isAllowed;
 }
 
-con_set CommaFreeTask::filterCyclicalWords(con_set list, string word) {
+void CommaFreeTask::filterCyclicalWords(con_set& list, string word) {
     for ( int i = 0; i < k; ++i ) {
         rotate(word.begin(), word.begin() + 1, word.end());
         list.unsafe_erase(word);
     }
-    return list;
 }

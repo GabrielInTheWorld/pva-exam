@@ -10,14 +10,10 @@ void writer::writeToFile(string stream) {
 }
 
 void writer::setDictionary(string dictionary) {
-    /*if ( writer::dictionary.size() < dictionary.size() ) {
-        writer::dictionary = dictionary;
-    }*/
     solutionList.push_back(dictionary);
 }
 
 string writer::getDictionary() {
-    //return writer::dictionary;
     for ( string word : solutionList ) {
         if ( word.size() > dictionary.size() ) {
             dictionary = word;

@@ -19,21 +19,20 @@ typedef concurrent_unordered_set<string> con_set;
 
 class CommaFreeTask: public task {
 public:
-    CommaFreeTask(con_set wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions, bool* isFinished, task_group_context* group);
+    CommaFreeTask(con_set wordList, string code, string wordToAppend, const int& maximumCodeWords, int k, int solutions, task_group_context* group);
     task* execute();
 
 private:
-    bool checkIfCyclical(string code, string word);
-    bool codeContains(string code, string word);
-    bool checkIfAppendingIsAllowed(string code, string word);
-    con_set filterCyclicalWords(con_set list, string word);
+    bool checkIfCyclical(const string& code, string word);
+    bool codeContains(const string& code, const string& word);
+    bool checkIfAppendingIsAllowed(const string& code, string word);
+    void filterCyclicalWords(con_set& list, string word);
 
     int solutions;
-    int maximumCodeWords = 0;
+    const int& maximumCodeWords;
     int k = 0;
     string code = "";
     string wordToAppend = "";
-    bool* isFinished;
     con_set wordList;
     task_group_context* group;
 };

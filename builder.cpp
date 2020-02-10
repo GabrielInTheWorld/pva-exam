@@ -7,8 +7,7 @@ Builder::~Builder() {
 concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>* wordList, int k) {
     this->k = k;
 
-    auto tmp = *wordList;
-    con_set setCodeWords = k % 2 == 0 ? insertWordsEvenK(tmp) : insertWordsOddK(tmp);
+    con_set setCodeWords = k % 2 == 0 ? insertWordsEvenK(*wordList) : insertWordsOddK(*wordList);
 
     int solutions = 0;
     int maximumCodeWords = setCodeWords.size() / k;
@@ -19,18 +18,15 @@ concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>*
     task_list roots;
     for ( int i = 0; i < (int)setCodeWords.size(); ++i ) {
         string firstWord = *next(setCodeWords.begin(), i);
-        CommaFreeTask* root = new(task::allocate_root(*context))CommaFreeTask(setCodeWords, code, firstWord, maximumCodeWords, k, solutions, &isFinished, context);
+        CommaFreeTask* root = new(task::allocate_root(*context))CommaFreeTask(setCodeWords, code, firstWord, maximumCodeWords, k, solutions, context);
         roots.push_back(*root);
-        //group.run(roots);
     }
     task::spawn_root_and_wait(roots);
-    //group.run_and_wait(roots);
     return resultList;
 }
 
-con_set Builder::insertWordsEvenK(concurrent_vector<string> wordList) {
+con_set Builder::insertWordsEvenK(const concurrent_vector<string>& wordList) {
     con_set result;
-    concurrent_vector<string> tmp;
     auto callback = [&](int index) {
         string word = wordList[index];
         if ( !checkIfPeriodEvenK(word) ) {
@@ -41,7 +37,7 @@ con_set Builder::insertWordsEvenK(concurrent_vector<string> wordList) {
     return result;
 }
 
-con_set Builder::insertWordsOddK(concurrent_vector<string> wordList) {
+con_set Builder::insertWordsOddK(const concurrent_vector<string>& wordList) {
     con_set result;
     auto callback = [&](int index) {
         string word = wordList[index];
@@ -53,7 +49,7 @@ con_set Builder::insertWordsOddK(concurrent_vector<string> wordList) {
     return result;
 }
 
-bool Builder::checkIfPeriodOddK(string word) {
+bool Builder::checkIfPeriodOddK(const string& word) {
     bool isPeriodic = true;
     if ( k == 1 ) {
         return false;
@@ -69,17 +65,13 @@ bool Builder::checkIfPeriodOddK(string word) {
     return isPeriodic;
 }
 
-bool Builder::checkIfPeriodEvenK(string word) {
+bool Builder::checkIfPeriodEvenK(const string& word) {
     const int MIDDLE = k / 2;
     bool isPeriodic = true;
     for ( int i = 1; i < MIDDLE + 1; ++i ) {
         isPeriodic = true;
         string substr = word.substr(0, i);
         int subLength = (int)substr.length();
-        /*for ( int j = 1; j < k / subLength; ++j ) {
-            isPeriodic = isPeriodic && substr == word.substr(subLength * j, i);
-            substr = word.substr(subLength * j, i);
-        }*/
         auto callback = [&](int index) {
             isPeriodic = isPeriodic && substr == word.substr(subLength * index, i);
         };
