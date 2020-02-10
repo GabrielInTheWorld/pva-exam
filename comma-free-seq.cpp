@@ -51,7 +51,6 @@ void CommaFreeSeq::start() {
     ofstream writeFile("word-list.txt");
     bool isRunning = true;
     while (isRunning) {
-        //char word[4];
         string word;
         cin >> word;
         if ( word == "x" ) {

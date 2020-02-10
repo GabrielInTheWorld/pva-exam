@@ -186,7 +186,6 @@
     <ClCompile Include="comma-free-seq.cpp" />
     <ClCompile Include="comma-free-task.cpp" />
     <ClCompile Include="pva-exam.cpp" />
-    <ClCompile Include="singleton.cpp" />
     <ClCompile Include="writer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -199,7 +198,6 @@
     <ClInclude Include="comma-free-scheduler.h" />
     <ClInclude Include="comma-free-seq.h" />
     <ClInclude Include="comma-free-task.h" />
-    <ClInclude Include="singleton.h" />
     <ClInclude Include="writer.h" />
   </ItemGroup>
   <ItemGroup>

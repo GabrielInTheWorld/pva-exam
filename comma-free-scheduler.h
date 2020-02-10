@@ -21,11 +21,9 @@ public:
     CommaFreeScheduler(int n, int k);
     virtual ~CommaFreeScheduler();
     void startCommaFreeParallel(int numberCores);
-    //void startCommaFreeChecker();
 
 private:
     string initWord();
-    void evaluate(task_list& list);
     void writeSolution(string solutionCode, int numberCores, double seconds);
 
     concurrent_vector<string>* wordList = new concurrent_vector<string>();

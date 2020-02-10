@@ -39,9 +39,6 @@
     <ClCompile Include="writer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="singleton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -66,9 +63,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="writer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="singleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

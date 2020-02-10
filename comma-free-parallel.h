@@ -11,17 +11,10 @@ using namespace tbb;
 class CommaFreeParallel : public task {
 public:
     CommaFreeParallel(concurrent_vector<string>* wordList, string word, int index, int raise, int n, int k);
-    //void start();
     task* execute();
 
 private:
-    bool checkIfCommaFree();
-    bool checkIfCyclical(string word);
     bool contains(concurrent_vector<string> list, string word);
-    bool checkIfPeriodic();
-    //string shiftWord(string word);
-    void addWord();
-    //void addToWordList();
 
     string word = "";
     int n = 0;

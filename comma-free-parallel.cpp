@@ -35,28 +35,6 @@ task* CommaFreeParallel::execute() {
     return NULL;
 }
 
-bool CommaFreeParallel::checkIfCommaFree() {
-    return false;
-}
-
-bool CommaFreeParallel::checkIfCyclical(string word) {
-    bool cyclical = false;
-   /* for ( int i = 0; i < k; ++i ) {
-        if ( contains(NULL, word) ) {
-            cyclical = true;
-            break;
-        }
-    }*/
-    return cyclical;
-}
-
 bool CommaFreeParallel::contains(concurrent_vector<string> list, string word) {
     return find(list.begin(), list.end(), word) != list.end();
-}
-
-bool CommaFreeParallel::checkIfPeriodic() {
-    return false;
-}
-
-void CommaFreeParallel::addWord() {
 }

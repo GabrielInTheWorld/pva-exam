@@ -11,18 +11,7 @@
 using namespace std;
 using namespace tbb;
 
-int readArgument(int arg, int defaults) {
-    if ( arg > 0 && arg <= 10 ) {
-        return arg;
-    } else {
-        return defaults;
-    }
-}
-
 int main(int argc, char** argv) {
-    /*for ( int i = 0; i < argc; ++i ) {
-        cout << "argv[" << i << "]: " << atoi(argv[i]) << endl;
-    }*/
     int numberCores = task_scheduler_init::automatic;
     int n = 2;
     int k = 6;
@@ -35,15 +24,10 @@ int main(int argc, char** argv) {
             numberCores = atoi(argv[3]);
         }
 
-        //n = readArgument(atoi(argv[1]), 2);
-        //k = readArgument(atoi(argv[2]), 6);
         n = atoi(argv[1]);
         k = atoi(argv[2]);
     }
 
-    //int n = 2;
-    //int k = 5;
-    //int numberCores = 8;
     CommaFreeScheduler scheduler(n, k);
     scheduler.startCommaFreeParallel(numberCores);
     //CommaFreeSeq cfs;

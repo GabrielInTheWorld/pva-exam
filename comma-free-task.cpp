@@ -14,11 +14,18 @@ task* CommaFreeTask::execute() {
     if ( *isFinished ) {
         return NULL;
     }
-    if ( !checkIfCyclical(code, wordToAppend) && checkIfAppendingIsAllowed(code, wordToAppend) ) {
+    bool canBeAppended = true;
+    auto checkCyclical = [&]() {
+        canBeAppended = canBeAppended && !checkIfCyclical(code, wordToAppend);
+    };
+    auto checkAppending = [&]() {
+        canBeAppended = canBeAppended && checkIfAppendingIsAllowed(code, wordToAppend);
+    };
+    parallel_invoke(checkAppending, checkCyclical);
+    if (canBeAppended) {
         string nextCode = code + wordToAppend;
         wordList = filterCyclicalWords(wordList, wordToAppend);
         ++solutions;
-        //writer::getInstance()->setDictionary(nextCode);
         writer::setDictionary(nextCode);
         
         if ( solutions == maximumCodeWords ) {
@@ -82,11 +89,5 @@ con_set CommaFreeTask::filterCyclicalWords(con_set list, string word) {
         rotate(word.begin(), word.begin() + 1, word.end());
         list.unsafe_erase(word);
     }
-    /*auto callback = [&](int index) {
-        string tmp = word;
-        rotate(tmp.begin(), tmp.begin() + 1, tmp.end());
-        list.erase(tmp);
-    };
-    parallel_for(0, k, callback);*/
     return list;
 }

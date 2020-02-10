@@ -27,39 +27,13 @@ void CommaFreeScheduler::startCommaFreeParallel(int numberCores) {
     task::spawn_root_and_wait(list);
     cout << "Number of all words: " << wordList->size() << endl;
 
-    //evaluate(list);
     Builder builder;
     auto resultList = builder.buildCommaFreeList(wordList, k);
     tick_count c1 = tick_count::now();
-    //cout << "Time needed: " << (c1 - c0).seconds() << endl;
+    cout << "Time needed: " << (c1 - c0).seconds() << endl;
     string solutionCode = writer::getDictionary();
     writeSolution(solutionCode, number, (c1 - c0).seconds());
-    //int solutions = 0;
-    //string stream = "Run task with n: " + to_string(n) + ", k: " + to_string(k) + ", using #cores: " + to_string(number) + " in " + to_string((c1 - c0).seconds()) + " seconds.\nFound solution: " + solutionCode;
-    //for ( int i = 0; i < solutionCode.size(); i += k ) {
-    //    string subWord = solutionCode.substr(i, k);
-    //    stream += "\n" + subWord;
-    //    ++solutions;
-    //}
-    //stream += "\nFound #" + to_string(solutions) + " code words.";
-    //writer::writeToFile(stream);
 }
-
-//void CommaFreeScheduler::startCommaFreeChecker() {
-//    string startWord = initWord();
-//    cout << "Start!" << endl;
-//    
-//    
-//    task_list list;
-//
-//    for ( int i = n - 1; i >= 0; --i ) {
-//        string tmp = startWord;
-//        CommaFreeChecker* root = new (task::allocate_root())CommaFreeChecker(wordList, tmp, 0, i, n, k);
-//        list.push_back(*root);
-//    }
-//
-//    evaluate(list);
-//}
 
 string CommaFreeScheduler::initWord() {
     string startWord = "";
@@ -67,22 +41,6 @@ string CommaFreeScheduler::initWord() {
         startWord.append("a");
     }
     return startWord;
-}
-
-void CommaFreeScheduler::evaluate(task_list& list) {
-    tick_count t0 = tick_count::now();
-    task::spawn_root_and_wait(list);
-    tick_count t1 = tick_count::now();
-
-    //cout << "Finished!" << endl;
-    //cout << "wordList: " << endl;
-    auto tmpList = *wordList;
-   /* for ( int i = 0; i < tmpList.size(); ++i ) {
-        cout << i << ": " << tmpList[i] << endl;
-    }*/
-    //cout << endl;
-    //cout << "Time needed: " << (t1 - t0).seconds() << endl;
-    cout << "Number of all words: " << wordList->size() << endl;
 }
 
 void CommaFreeScheduler::writeSolution(string solutionCode, int numberCores, double seconds) {

@@ -4,6 +4,7 @@
 #include <string>
 #include <set>
 #include <tbb/task.h>
+#include <tbb/parallel_invoke.h>
 #include <tbb/parallel_for.h>
 #include <tbb/concurrent_vector.h>
 #include <tbb/concurrent_unordered_set.h>
