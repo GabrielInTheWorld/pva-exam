@@ -46,7 +46,7 @@ string CommaFreeScheduler::initWord() {
 void CommaFreeScheduler::writeSolution(string solutionCode, int numberCores, double seconds) {
     int solutions = 0;
     string stream = "Run task with n: " + to_string(n) + ", k: " + to_string(k) + ", using #cores: " + to_string(numberCores) + " in " + to_string(seconds) + " seconds.\nFound solution: " + solutionCode;
-    for ( int i = 0; i < solutionCode.size(); i += k ) {
+    for ( int i = 0; i < (int)solutionCode.size(); i += k ) {
         string subWord = solutionCode.substr(i, k);
         stream += "\n" + subWord;
         ++solutions;

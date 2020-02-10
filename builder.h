@@ -17,6 +17,7 @@ typedef concurrent_unordered_set<string> con_set;
 
 class Builder {
 public:
+    ~Builder();
     concurrent_vector<string> buildCommaFreeList(concurrent_vector<string>* wordList, int k);
 
 private:
@@ -27,4 +28,5 @@ private:
 
     int k = 0;
     concurrent_vector<string> resultList;
+    task_group_context* context;
 };

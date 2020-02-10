@@ -1,6 +1,7 @@
 #include "writer.h"
 
 string writer::dictionary = "";
+concurrent_vector<string> writer::solutionList;
 
 void writer::writeToFile(string stream) {
     ofstream writeFile("word-list.txt");
@@ -9,11 +10,18 @@ void writer::writeToFile(string stream) {
 }
 
 void writer::setDictionary(string dictionary) {
-    if ( writer::dictionary.size() < dictionary.size() ) {
+    /*if ( writer::dictionary.size() < dictionary.size() ) {
         writer::dictionary = dictionary;
-    }
+    }*/
+    solutionList.push_back(dictionary);
 }
 
 string writer::getDictionary() {
+    //return writer::dictionary;
+    for ( string word : solutionList ) {
+        if ( word.size() > dictionary.size() ) {
+            dictionary = word;
+        }
+    }
     return writer::dictionary;
 }

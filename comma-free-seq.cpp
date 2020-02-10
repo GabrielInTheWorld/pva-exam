@@ -15,7 +15,7 @@ bool CommaFreeSeq::checkIfPeriodic(string word) {
 }
 
 bool CommaFreeSeq::checkIfPermutation(string word) {
-    for ( int i = 0; i < wordList.size(); ++i ) {
+    for ( int i = 0; i < (int)wordList.size(); ++i ) {
         if ( isPermutation(word, wordList[i]) ) {
             cout << word << " is permutation of " << wordList[i] << endl;
             return true;
@@ -28,7 +28,7 @@ bool CommaFreeSeq::isPermutation(string word, string comparison) {
     sort(word.begin(), word.end());
     sort(comparison.begin(), comparison.end());
 
-    for ( int i = 0; i < word.length(); ++i ) {
+    for ( int i = 0; i < (int)word.length(); ++i ) {
         if ( word[i] != comparison[i] ) {
             return false;
         }

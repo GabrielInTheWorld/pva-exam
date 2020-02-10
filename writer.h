@@ -8,7 +8,11 @@
 #include <vector>
 #include <algorithm>
 
+#include <tbb/parallel_for.h>
+#include <tbb/concurrent_vector.h>
+
 using namespace std;
+using namespace tbb;
 
 class writer {
 public:
@@ -18,4 +22,5 @@ public:
 
 private:
     static string dictionary;
+    static concurrent_vector<string> solutionList;
 };

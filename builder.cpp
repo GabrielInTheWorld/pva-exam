@@ -1,5 +1,9 @@
 #include "builder.h"
 
+Builder::~Builder() {
+    delete context;
+}
+
 concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>* wordList, int k) {
     this->k = k;
 
@@ -11,24 +15,16 @@ concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>*
     cout << "Maximum code words: " << maximumCodeWords << endl;
     string code = "";
     bool isFinished = false;
+    context = new task_group_context();
     task_list roots;
-    for ( int i = 0; i < setCodeWords.size(); ++i ) {
+    for ( int i = 0; i < (int)setCodeWords.size(); ++i ) {
         string firstWord = *next(setCodeWords.begin(), i);
-        CommaFreeTask* root = new(task::allocate_root())CommaFreeTask(setCodeWords, code, firstWord, maximumCodeWords, k, solutions, &isFinished);
+        CommaFreeTask* root = new(task::allocate_root(*context))CommaFreeTask(setCodeWords, code, firstWord, maximumCodeWords, k, solutions, &isFinished, context);
         roots.push_back(*root);
+        //group.run(roots);
     }
-    //task::spawn_root_and_wait(roots);
-
-    //auto callback = [&](int begin, int end) {
-    //    for ( int i = begin; i < end; ++i ) {
-    //        string firstWord = *next(setCodeWords.begin(), i);
-    //        CommaFreeTask* root = new(task::allocate_root())CommaFreeTask(setCodeWords, code, firstWord, maximumCodeWords, k, solutions, &isFinished);
-    //        roots.push_back(*root);
-    //    }
-    //};
-    //parallel_invoke()
     task::spawn_root_and_wait(roots);
-
+    //group.run_and_wait(roots);
     return resultList;
 }
 
@@ -64,7 +60,7 @@ bool Builder::checkIfPeriodOddK(string word) {
     }
     
     char letter = word[0];
-    for ( int i = 1; i < word.size(); ++i ) {
+    for ( int i = 1; i < (int)word.size(); ++i ) {
         if ( word[i] != letter ) {
             isPeriodic = false;
             break;

@@ -4,6 +4,7 @@
 #include <string>
 #include <set>
 #include <tbb/task.h>
+#include <tbb/task_group.h>
 #include <tbb/parallel_invoke.h>
 #include <tbb/parallel_for.h>
 #include <tbb/concurrent_vector.h>
@@ -18,7 +19,7 @@ typedef concurrent_unordered_set<string> con_set;
 
 class CommaFreeTask: public task {
 public:
-    CommaFreeTask(con_set wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions, bool* isFinished);
+    CommaFreeTask(con_set wordList, string code, string wordToAppend, int maximumCodeWords, int k, int solutions, bool* isFinished, task_group_context* group);
     task* execute();
 
 private:
@@ -34,4 +35,5 @@ private:
     string wordToAppend = "";
     bool* isFinished;
     con_set wordList;
+    task_group_context* group;
 };
