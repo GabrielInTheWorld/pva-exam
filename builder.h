@@ -20,13 +20,9 @@ class Builder {
 public:
     ~Builder();
     con_set buildPeriodicFreeUnorderedSet(concurrent_vector<string>* wordList, const int& k);
-    concurrent_vector<bool> buildPeriodicFreeVector(concurrent_vector<string>* wordList, const int& k);
+    concurrent_vector<bool> buildWordListIndices(concurrent_vector<string>* wordList, const int& k);
 
 private:
-    //con_set insertWordsEvenK(const concurrent_vector<string>& wordList);
-    //con_set insertWordsOddK(const concurrent_vector<string>& wordList);
-    //bool checkIfPeriodOddK(const string& word);
-    //bool checkIfPeriodEvenK(const string& word);
     bool checkIfPeriod(const string& word);
 
     int k = 0;

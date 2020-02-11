@@ -1,4 +1,4 @@
-Run task with n: 2, k: 6, using #cores: 4 in 1.559560 seconds.
+Run task with n: 2, k: 6, using #cores: 4 in 1.579077 seconds.
 Found solution: babbaaaabbaababbbababaaaaaaabaabaabbabbbbbbbaabbbaaabb
 babbaa
 aabbaa

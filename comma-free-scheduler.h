@@ -26,6 +26,7 @@ public:
 
 private:
     string initWord();
+    tick_count initParallelWork();
     void createWordList(string startWord);
     void writeSolution(string solutionCode, int numberCores, double seconds);
 
