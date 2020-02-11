@@ -10,6 +10,7 @@
 #include <tbb/concurrent_vector.h>
 
 #include "comma-free-parallel.h"
+#include "comma-free-vector-task.h"
 #include "builder.h"
 #include "writer.h"
 
@@ -33,4 +34,5 @@ private:
     int k = 0;
     int numberCores = 0;
     task_group_context* context;
+    Builder builder;
 };
