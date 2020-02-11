@@ -4,6 +4,7 @@ CommaFreeVectorTask::CommaFreeVectorTask(const con_vec* wordList, const concurre
     this->indices = indices;
     this->nextIndex = nextIndex;
     this->solutions = solutions;
+    this->word = (*wordList)[nextIndex];
 }
 
 task* CommaFreeVectorTask::execute() {
@@ -11,19 +12,20 @@ task* CommaFreeVectorTask::execute() {
         return NULL;
     }
     bool canBeAppended = true;
+    bool isCyclical = false;
     auto checkCyclical = [&]() {
-        canBeAppended = canBeAppended && !checkIfCyclical(dereferencingCode(), (*wordList)[nextIndex]);
+        isCyclical = checkIfCyclical(dereferencingCode(), word);
     };
     auto checkAppending = [&]() {
-        canBeAppended = canBeAppended && checkIfAppendingIsAllowed(dereferencingCode(), (*wordList)[nextIndex]);
+        canBeAppended = checkIfAppendingIsAllowed(dereferencingCode(), word);
     };
     parallel_invoke(checkAppending, checkCyclical);
-    if ( canBeAppended ) {
+    if ( canBeAppended && !isCyclical ) {
         auto filterWords = [&]() {
             ++solutions;
             writer::setDictionary(dereferencingCode() + getWord());
         };
-        parallel_invoke([&]() {filterCyclicalWords(wordListIndices, getWord()); }, filterWords);
+        parallel_invoke([&]() {filterCyclicalWords(&wordListIndices, getWord()); }, filterWords);
 
         if ( solutions == maximumCodeWords ) {
             cout << "Solution found with " << solutions << " CodeWords: " << (dereferencingCode() + getWord()) << endl;
@@ -51,14 +53,18 @@ task* CommaFreeVectorTask::execute() {
 }
 
 CommaFreeVectorTask* CommaFreeVectorTask::getParent() {
+    cout << "getParent" << endl;
     return parent;
 }
 
 string CommaFreeVectorTask::getWord() {
-    return (*wordList)[nextIndex];
+    cout << "getWord" << endl;
+    //return (*wordList)[nextIndex];
+    return word;
 }
 
-bool CommaFreeVectorTask::checkIfCyclical(const string& code, string word) {
+bool CommaFreeVectorTask::checkIfCyclical(const string code, string word) {
+    cout << "checkIfCyclical" << endl;
     bool cyclical = false;
     for ( int i = 0; i < k; ++i ) {
         if ( codeContains(code, word) ) {
@@ -70,15 +76,20 @@ bool CommaFreeVectorTask::checkIfCyclical(const string& code, string word) {
     return cyclical;
 }
 
-bool CommaFreeVectorTask::codeContains(const string& code, const string& word) {
+bool CommaFreeVectorTask::codeContains(const string code, const string word) {
+    cout << "codeContains" << endl;
     return code.find(word) != string::npos;
 }
 
-bool CommaFreeVectorTask::checkIfAppendingIsAllowed(const string& code, const string& word) {
+bool CommaFreeVectorTask::checkIfAppendingIsAllowed(const string code, const string word) {
+    cout << "checkIfAppendingIsAllowed" << endl;
     string result = code + word;
     bool isAllowed = true;
     int codeSize = result.size();
-    for ( int i = 1; i < k && codeSize > k; ++i ) {
+    if ( codeSize <= k ) {
+        return true;
+    }
+    for ( int i = 1; i < k; ++i ) {
         string substring = result.substr(codeSize - k - i, k);
         if ( codeContains(code, substring) ) {
             isAllowed = false;
@@ -88,25 +99,28 @@ bool CommaFreeVectorTask::checkIfAppendingIsAllowed(const string& code, const st
     return isAllowed;
 }
 
-void CommaFreeVectorTask::filterCyclicalWords(concurrent_vector<bool> list, const string& word) {
+void CommaFreeVectorTask::filterCyclicalWords(concurrent_vector<bool>* list, const string word) {
+    cout << "filterCyclicalWords" << endl;
     auto callback = [&](int index) {
         string tmp = word;
         rotateLeft(tmp, index);
         auto it = find(wordList->begin(), wordList->end(), tmp);
         if ( it != wordList->end() ) {
-            list[distance(wordList->begin(), it)] = 0;
+            (*list)[distance(wordList->begin(), it)] = 0;
         }
     };
     parallel_for(0, k, callback);
 }
 
 void CommaFreeVectorTask::rotateLeft(string& word, int range) {
+    cout << "rotate" << endl;
     reverse(word.begin(), word.begin() + range);
     reverse(word.begin() + range, word.end());
     reverse(word.begin(), word.end());
 }
 
 string& CommaFreeVectorTask::dereferencingCode() {
+    cout << "dereferencing" << endl;
     string result = "";
     for ( auto i = parent; i != NULL; i = parent->getParent() ) result += i->getWord();
     return result;

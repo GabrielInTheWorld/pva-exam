@@ -24,21 +24,22 @@ public:
     string getWord();
 
 private:
-    bool checkIfCyclical(const string& code, string word);
-    bool codeContains(const string& code, const string& word);
-    bool checkIfAppendingIsAllowed(const string& code, const string& word);
-    void filterCyclicalWords(concurrent_vector<bool> list, const string& word);
+    bool checkIfCyclical(const string code, string word);
+    bool codeContains(const string code, const string word);
+    bool checkIfAppendingIsAllowed(const string code, const string word);
+    void filterCyclicalWords(concurrent_vector<bool>* list, const string word);
     void rotateLeft(string& word, int range);
     string& dereferencingCode();
 
     CommaFreeVectorTask* parent;
     const con_vec* wordList;
-    const concurrent_vector<bool> wordListIndices;
+    concurrent_vector<bool> wordListIndices;
     concurrent_vector<unsigned int> indices;
     unsigned int nextIndex;
     const int& maximumCodeWords;
     const int& k;
     int solutions;
+    string word;
     task_group_context* group;
 };
 

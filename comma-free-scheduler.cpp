@@ -50,9 +50,13 @@ void CommaFreeScheduler::startCommaFreeVector() {
 
 string CommaFreeScheduler::initWord() {
     string startWord = "";
-    for ( int i = 0; i < k; ++i ) {
+    /*for ( int i = 0; i < k; ++i ) {
         startWord.append("a");
-    }
+    }*/
+    auto callback = [&](int index) {
+        startWord.append("a");
+    };
+    parallel_for(0, k, callback);
     return startWord;
 }
 

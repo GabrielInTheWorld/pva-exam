@@ -19,6 +19,8 @@ con_set Builder::buildPeriodicFreeUnorderedSet(concurrent_vector<string>* wordLi
 }
 
 concurrent_vector<bool> Builder::buildWordListIndices(concurrent_vector<string>* wordList, const int& k) {
+    this->k = k;
+
     concurrent_vector<bool> wordListIndices(wordList->size(), 1);
     auto callback = [&](int index) {
         wordListIndices[index] = !checkIfPeriod((*wordList)[index]);

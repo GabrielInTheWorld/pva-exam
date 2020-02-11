@@ -1,12 +1,3 @@
-Run task with n: 2, k: 6, using #cores: 4 in 1.579077 seconds.
-Found solution: babbaaaabbaababbbababaaaaaaabaabaabbabbbbbbbaabbbaaabb
-babbaa
-aabbaa
-babbba
-babaaa
-aaaaba
-abaabb
-abbbbb
-bbaabb
-baaabb
-Found #9 code words.
+Run task with n: 2, k: 6, using #cores: 8 in 0.015332 seconds.
+Found solution: 
+Found #0 code words.
