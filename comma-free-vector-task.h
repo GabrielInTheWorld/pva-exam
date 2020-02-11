@@ -18,7 +18,7 @@ typedef concurrent_vector<string> con_vec;
 class CommaFreeVectorTask: public task {
 
 public: 
-    CommaFreeVectorTask(const con_vec* wordList, const concurrent_vector<bool> wordListIndices, concurrent_vector<unsigned int> indices, unsigned int nextIndex, const int& maximumCodeWords, const int& k, int solutions, const task_group_context* group, CommaFreeVectorTask* parent);
+    CommaFreeVectorTask(const con_vec* wordList, const concurrent_vector<bool> wordListIndices, concurrent_vector<unsigned int> indices, unsigned int nextIndex, const int& maximumCodeWords, const int& k, int solutions, task_group_context* group, CommaFreeVectorTask* parent);
     task* execute();
     CommaFreeVectorTask* getParent();
     string getWord();
@@ -27,7 +27,7 @@ private:
     bool checkIfCyclical(const string& code, string word);
     bool codeContains(const string& code, const string& word);
     bool checkIfAppendingIsAllowed(const string& code, const string& word);
-    void filterCyclicalWords(concurrent_vector<bool>& list, const string& word);
+    void filterCyclicalWords(concurrent_vector<bool> list, const string& word);
     void rotateLeft(string& word, int range);
     string& dereferencingCode();
 
@@ -39,6 +39,6 @@ private:
     const int& maximumCodeWords;
     const int& k;
     int solutions;
-    const task_group_context* group;
+    task_group_context* group;
 };
 

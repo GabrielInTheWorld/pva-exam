@@ -1,6 +1,6 @@
 #include "comma-free-vector-task.h"
 
-CommaFreeVectorTask::CommaFreeVectorTask(const con_vec* wordList, const concurrent_vector<bool> wordListIndices, concurrent_vector<unsigned int> indices, unsigned int nextIndex, const int& maximumCodeWords, const int& k, int solutions, const task_group_context* group, CommaFreeVectorTask* parent): wordList(wordList), wordListIndices(wordListIndices), maximumCodeWords(maximumCodeWords), k(k), group(group), parent(parent) {
+CommaFreeVectorTask::CommaFreeVectorTask(const con_vec* wordList, const concurrent_vector<bool> wordListIndices, concurrent_vector<unsigned int> indices, unsigned int nextIndex, const int& maximumCodeWords, const int& k, int solutions, task_group_context* group, CommaFreeVectorTask* parent): wordList(wordList), wordListIndices(wordListIndices), maximumCodeWords(maximumCodeWords), k(k), group(group), parent(parent) {
     this->indices = indices;
     this->nextIndex = nextIndex;
     this->solutions = solutions;
@@ -24,11 +24,9 @@ task* CommaFreeVectorTask::execute() {
             writer::setDictionary(dereferencingCode() + getWord());
         };
         parallel_invoke([&]() {filterCyclicalWords(wordListIndices, getWord()); }, filterWords);
-        //filterCyclicalWords(wordList, wordToAppend);
-
 
         if ( solutions == maximumCodeWords ) {
-            cout << "Solution found with " << solutions << " CodeWords: " << code << endl;
+            cout << "Solution found with " << solutions << " CodeWords: " << (dereferencingCode() + getWord()) << endl;
             group->cancel_group_execution();
             return NULL;
         }
@@ -36,12 +34,13 @@ task* CommaFreeVectorTask::execute() {
         task_list children;
         int count = 0;
         auto callback = [&](int index) {
-            string nextWordToAppend = *next(wordList.begin(), index);
-            CommaFreeTask* child = new(allocate_child())CommaFreeTask(wordList, code, nextWordToAppend, maximumCodeWords, k, solutions, group);
-            children.push_back(*child);
-            ++count;
+            if ( wordListIndices[index] ) {
+                CommaFreeVectorTask* child = new(allocate_child())CommaFreeVectorTask(wordList, wordListIndices, indices, index, maximumCodeWords, k, solutions, group, this);
+                children.push_back(*child);
+                ++count;
+            }
         };
-        parallel_for(0, (int)wordList.size(), callback);
+        parallel_for(0, (int)wordListIndices.size(), callback);
 
         if ( count > 0 ) {
             set_ref_count(count + 1);
@@ -89,7 +88,7 @@ bool CommaFreeVectorTask::checkIfAppendingIsAllowed(const string& code, const st
     return isAllowed;
 }
 
-void CommaFreeVectorTask::filterCyclicalWords(concurrent_vector<bool>& list, const string& word) {
+void CommaFreeVectorTask::filterCyclicalWords(concurrent_vector<bool> list, const string& word) {
     auto callback = [&](int index) {
         string tmp = word;
         rotateLeft(tmp, index);

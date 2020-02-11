@@ -4,16 +4,16 @@ Builder::~Builder() {
     delete context;
 }
 
-concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>* wordList, const int& k) {
+con_set Builder::buildCommaFreeList(concurrent_vector<string>* wordList, const int& k) {
     this->k = k;
 
-    con_set setCodeWords = k % 2 == 0 ? insertWordsEvenK(*wordList) : insertWordsOddK(*wordList);
+    //con_set setCodeWords = k % 2 == 0 ? insertWordsEvenK(*wordList) : insertWordsOddK(*wordList);
+    return (k % 2 == 0) ? insertWordsEvenK(*wordList) : insertWordsOddK(*wordList);
 
-    int solutions = 0;
+    /*int solutions = 0;
     int maximumCodeWords = setCodeWords.size() / k;
     cout << "Maximum code words: " << maximumCodeWords << endl;
     string code = "";
-    bool isFinished = false;
     context = new task_group_context();
     task_list roots;
     for ( int i = 0; i < (int)setCodeWords.size(); ++i ) {
@@ -22,7 +22,7 @@ concurrent_vector<string> Builder::buildCommaFreeList(concurrent_vector<string>*
         roots.push_back(*root);
     }
     task::spawn_root_and_wait(roots);
-    return resultList;
+    return resultList;*/
 }
 
 con_set Builder::insertWordsEvenK(const concurrent_vector<string>& wordList) {

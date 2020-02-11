@@ -1,38 +1,54 @@
 #include "comma-free-scheduler.h"
 
-CommaFreeScheduler::CommaFreeScheduler(int n, int k) {
+CommaFreeScheduler::CommaFreeScheduler(int n, int k, int numberCores) {
     this->n = n;
     this->k = k;
+    this->numberCores = (numberCores > 0 ? numberCores : task_scheduler_init::default_num_threads());
+    this->context = new tbb::task_group_context();
 }
 
 CommaFreeScheduler::~CommaFreeScheduler() {
     delete wordList;
 }
 
-void CommaFreeScheduler::startCommaFreeParallel(int numberCores) {
+void CommaFreeScheduler::startCommaFreeParallel() {
     cout << "Run task for n: " << n << endl;
     cout << "With k: " << k << endl;
     task_scheduler_init my_task(numberCores);
-    int number = (numberCores > 0 ? numberCores : my_task.default_num_threads());
-    cout << "Using #" << (numberCores > 0 ? numberCores : my_task.default_num_threads()) << " cores." << endl;
+    //int number = (numberCores > 0 ? numberCores : my_task.default_num_threads());
+    cout << "Using #" << numberCores << " cores." << endl;
     tick_count c0 = tick_count::now();
     string startWord = initWord();
+    createWordList(startWord);
 
-    task_list list;
-    for ( int i = 0; i < n; ++i ) {
-        string tmp = startWord;
-        CommaFreeParallel* root = new (task::allocate_root())CommaFreeParallel(wordList, tmp, 0, i, n, k);
-        list.push_back(*root);
-    }
-    task::spawn_root_and_wait(list);
-    cout << "Number of all words: " << wordList->size() << endl;
+    //task_list list;
+    //for ( int i = 0; i < n; ++i ) {
+    //    string tmp = startWord;
+    //    CommaFreeParallel* root = new (task::allocate_root())CommaFreeParallel(wordList, tmp, 0, i, n, k);
+    //    list.push_back(*root);
+    //}
+    //task::spawn_root_and_wait(list);
+    //cout << "Number of all words: " << wordList->size() << endl;
 
     Builder builder;
-    auto resultList = builder.buildCommaFreeList(wordList, k);
+    auto setCodeWords = builder.buildCommaFreeList(wordList, k);
+
+    task_list roots;
+    for ( int i = 0; i < (int)setCodeWords.size(); ++i ) {
+        string firstWord = *next(setCodeWords.begin(), i);
+        CommaFreeTask* root = new(task::allocate_root(*context))CommaFreeTask(setCodeWords, "", firstWord, setCodeWords.size()/k, k, 0, context);
+        roots.push_back(*root);
+    }
+    task::spawn_root_and_wait(roots);
+
     tick_count c1 = tick_count::now();
     cout << "Time needed: " << (c1 - c0).seconds() << endl;
     string solutionCode = writer::getDictionary();
-    writeSolution(solutionCode, number, (c1 - c0).seconds());
+    writeSolution(solutionCode, numberCores, (c1 - c0).seconds());
+}
+
+void CommaFreeScheduler::startCommaFreeVector() {
+
 }
 
 string CommaFreeScheduler::initWord() {
@@ -41,6 +57,17 @@ string CommaFreeScheduler::initWord() {
         startWord.append("a");
     }
     return startWord;
+}
+
+void CommaFreeScheduler::createWordList(string startWord) {
+    task_list list;
+    for ( int i = 0; i < n; ++i ) {
+        string tmp = startWord;
+        CommaFreeParallel* root = new (task::allocate_root())CommaFreeParallel(wordList, tmp, 0, i, n, k);
+        list.push_back(*root);
+    }
+    task::spawn_root_and_wait(list);
+    cout << "Number of all words: " << wordList->size() << endl;
 }
 
 void CommaFreeScheduler::writeSolution(string solutionCode, int numberCores, double seconds) {

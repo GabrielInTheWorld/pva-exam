@@ -18,15 +18,19 @@ using namespace tbb;
 
 class CommaFreeScheduler {
 public:
-    CommaFreeScheduler(int n, int k);
+    CommaFreeScheduler(int n, int k, int numberCores);
     virtual ~CommaFreeScheduler();
-    void startCommaFreeParallel(int numberCores);
+    void startCommaFreeParallel();
+    void startCommaFreeVector();
 
 private:
     string initWord();
+    void createWordList(string startWord);
     void writeSolution(string solutionCode, int numberCores, double seconds);
 
     concurrent_vector<string>* wordList = new concurrent_vector<string>();
     int n = 0;
     int k = 0;
+    int numberCores = 0;
+    task_group_context* context;
 };
