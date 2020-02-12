@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     //int numberCores = 2;
     int numberCores = task_scheduler_init::automatic;
     int n = 2;
-    int k = 7;
+    int k = 6;
 
     if ( argc < 3 ) {
         cout << "Warning: You have to enter arguments for n k #cores" << endl;

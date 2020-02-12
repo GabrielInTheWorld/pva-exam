@@ -16,6 +16,7 @@ void CommaFreeScheduler::startCommaFreeParallel() {
     tick_count c0 = initParallelWork();
 
     auto setCodeWords = builder.buildPeriodicFreeUnorderedSet(wordList, k);
+    cout << "Maximum size of dictionary: " << (setCodeWords.size() / k) << endl;
 
     task_list roots;
     for ( int i = 0; i < (int)setCodeWords.size(); ++i ) {

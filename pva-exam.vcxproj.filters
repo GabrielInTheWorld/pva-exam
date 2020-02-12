@@ -64,7 +64,6 @@
     <Text Include="word-list.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="makefile2" />
     <Text Include="makefile" />
   </ItemGroup>
 </Project>

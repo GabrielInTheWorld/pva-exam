@@ -14,26 +14,27 @@ task* CommaFreeTask::execute() {
         return NULL;
     }
     bool canBeAppended = true;
+    bool isCyclical = false;
     auto checkCyclical = [&]() {
-        canBeAppended = canBeAppended && !checkIfCyclical(code, wordToAppend);
+        isCyclical = checkIfCyclical(code, wordToAppend);
     };
     auto checkAppending = [&]() {
-        canBeAppended = canBeAppended && checkIfAppendingIsAllowed(code, wordToAppend);
+        canBeAppended = checkIfAppendingIsAllowed(code, wordToAppend);
     };
     parallel_invoke(checkAppending, checkCyclical);
-    if (canBeAppended) {
+    if (canBeAppended && !isCyclical) {
         code += wordToAppend;
-        auto filterWords = [&]() {
+        auto writeCode = [&]() {
             ++solutions;
             writer::setDictionary(code);
         };
-        parallel_invoke([&]() {filterCyclicalWords(wordList, wordToAppend); }, filterWords);
-        //filterCyclicalWords(wordList, wordToAppend);
-        
+        parallel_invoke([&]() {filterCyclicalWords(wordList, wordToAppend); }, writeCode);
 
-        if ( solutions == maximumCodeWords ) {
+        if ( solutions == maximumCodeWords && !group->is_group_execution_cancelled() ) {
+            locker.lock();
             cout << "Solution found with " << solutions << " CodeWords: " << code << endl;
             group->cancel_group_execution();
+            locker.unlock();
             return NULL;
         }
 
@@ -57,6 +58,10 @@ task* CommaFreeTask::execute() {
     return NULL;
 }
 
+bool CommaFreeTask::codeContains(const string& code, const string& word) {
+    return code.find(word) != string::npos;
+}
+
 bool CommaFreeTask::checkIfCyclical(const string& code, string word) {
     bool cyclical = false;
     for ( int i = 0; i < k; ++i ) {
@@ -69,14 +74,13 @@ bool CommaFreeTask::checkIfCyclical(const string& code, string word) {
     return cyclical;
 }
 
-bool CommaFreeTask::codeContains(const string& code, const string& word) {
-    return code.find(word) != string::npos;
-}
-
 bool CommaFreeTask::checkIfAppendingIsAllowed(const string& code, string word) {
     string result = code + word;
     bool isAllowed = true;
     int codeSize = result.size();
+    if ( codeSize <= k ) {
+        return true;
+    }
     for ( int i = 1; i < k && codeSize > k; ++i ) {
         string substring = result.substr(codeSize - k - i, k);
         if ( codeContains(code, substring) ) {

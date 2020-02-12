@@ -1,7 +1,7 @@
 #include "writer.h"
 
 string writer::dictionary = "";
-concurrent_vector<string> writer::solutionList;
+concurrent_unordered_multiset<string> writer::solutionSet;
 
 void writer::writeToFile(string stream) {
     ofstream writeFile("word-list.txt");
@@ -10,11 +10,11 @@ void writer::writeToFile(string stream) {
 }
 
 void writer::setDictionary(string dictionary) {
-    solutionList.push_back(dictionary);
+    solutionSet.insert(dictionary);
 }
 
 string writer::getDictionary() {
-    for ( string word : solutionList ) {
+    for ( string word : solutionSet ) {
         if ( word.size() > dictionary.size() ) {
             dictionary = word;
         }

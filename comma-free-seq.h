@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <queue>
 #include <algorithm>
 
 using namespace std;
@@ -16,13 +17,17 @@ public:
 
 private:
     vector<string> wordList;
+    string commaFreeCode = "";
 
-    bool isPermutation(string word, string comparison);
-    bool checkIfPermutation(string word);
+    bool codeContains(string code, string word);
+    bool checkIfAppendingIsAllowed(string code, string word);
     bool checkIfPeriodic(string word);
+    bool checkIfCyclical(string code, string word);
     bool checkIfCommaFree(string word);
 
     void initWordList();
     void start();
+
+    int k = 4;
 };
 

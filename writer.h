@@ -9,7 +9,7 @@
 #include <algorithm>
 
 #include <tbb/parallel_for.h>
-#include <tbb/concurrent_vector.h>
+#include <tbb/concurrent_unordered_set.h>
 
 using namespace std;
 using namespace tbb;
@@ -22,5 +22,5 @@ public:
 
 private:
     static string dictionary;
-    static concurrent_vector<string> solutionList;
+    static concurrent_unordered_multiset<string> solutionSet;
 };

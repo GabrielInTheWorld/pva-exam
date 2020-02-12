@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <set>
+#include <tbb/mutex.h>
 #include <tbb/task.h>
 #include <tbb/task_group.h>
 #include <tbb/parallel_invoke.h>
@@ -23,8 +24,8 @@ public:
     task* execute();
 
 private:
-    bool checkIfCyclical(const string& code, string word);
     bool codeContains(const string& code, const string& word);
+    bool checkIfCyclical(const string& code, string word);
     bool checkIfAppendingIsAllowed(const string& code, string word);
     void filterCyclicalWords(con_set& list, string word);
 
@@ -35,4 +36,5 @@ private:
     string wordToAppend = "";
     con_set wordList;
     task_group_context* group;
+    mutex locker;
 };
