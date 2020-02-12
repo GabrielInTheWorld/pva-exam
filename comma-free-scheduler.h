@@ -10,7 +10,6 @@
 #include <tbb/concurrent_vector.h>
 
 #include "comma-free-parallel.h"
-#include "comma-free-vector-task.h"
 #include "builder.h"
 #include "writer.h"
 
@@ -22,7 +21,6 @@ public:
     CommaFreeScheduler(int n, int k, int numberCores);
     virtual ~CommaFreeScheduler();
     void startCommaFreeParallel();
-    void startCommaFreeVector();
 
 private:
     string initWord();

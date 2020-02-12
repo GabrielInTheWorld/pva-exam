@@ -180,12 +180,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="builder.cpp" />
-    <ClCompile Include="comma-free-checker.cpp" />
     <ClCompile Include="comma-free-parallel.cpp" />
     <ClCompile Include="comma-free-scheduler.cpp" />
     <ClCompile Include="comma-free-seq.cpp" />
     <ClCompile Include="comma-free-task.cpp" />
-    <ClCompile Include="comma-free-vector-task.cpp" />
     <ClCompile Include="pva-exam.cpp" />
     <ClCompile Include="writer.cpp" />
   </ItemGroup>
@@ -194,12 +192,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="builder.h" />
-    <ClInclude Include="comma-free-checker.h" />
     <ClInclude Include="comma-free-parallel.h" />
     <ClInclude Include="comma-free-scheduler.h" />
     <ClInclude Include="comma-free-seq.h" />
     <ClInclude Include="comma-free-task.h" />
-    <ClInclude Include="comma-free-vector-task.h" />
     <ClInclude Include="writer.h" />
   </ItemGroup>
   <ItemGroup>

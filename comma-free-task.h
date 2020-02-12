@@ -20,7 +20,6 @@ typedef concurrent_unordered_set<string> con_set;
 class CommaFreeTask: public task {
 public:
     CommaFreeTask(con_set wordList, string code, string wordToAppend, const int& maximumCodeWords, const int& k, int solutions, task_group_context* group);
-    CommaFreeTask(const con_set* wordList, const concurrent_vector<bool> wordListIndices, concurrent_vector<unsigned int> indices, unsigned int nextIndex, const int& maximumCodeWords, const int& k, int solutions, task_group_context* group);
     task* execute();
 
 private:

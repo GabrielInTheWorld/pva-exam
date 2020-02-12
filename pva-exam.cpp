@@ -12,10 +12,10 @@ using namespace std;
 using namespace tbb;
 
 int main(int argc, char** argv) {
-    int numberCores = 8;
-    //int numberCores = task_scheduler_init::automatic;
+    //int numberCores = 2;
+    int numberCores = task_scheduler_init::automatic;
     int n = 2;
-    int k = 6;
+    int k = 7;
 
     if ( argc < 3 ) {
         cout << "Warning: You have to enter arguments for n k #cores" << endl;
@@ -30,8 +30,7 @@ int main(int argc, char** argv) {
     }
 
     CommaFreeScheduler scheduler(n, k, numberCores);
-    //scheduler.startCommaFreeParallel();
-    scheduler.startCommaFreeVector();
+    scheduler.startCommaFreeParallel();
     //CommaFreeSeq cfs;
 }
 

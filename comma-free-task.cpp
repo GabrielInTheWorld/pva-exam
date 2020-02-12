@@ -9,11 +9,6 @@ CommaFreeTask::CommaFreeTask(con_set wordList, string code, string wordToAppend,
     this->group = group;
 }
 
-CommaFreeTask::CommaFreeTask(const con_set* wordList, const concurrent_vector<bool> wordListIndices, concurrent_vector<unsigned int> indices, unsigned int nextIndex, const int& maximumCodeWords, const int& k, int solutions, task_group_context* group): maximumCodeWords(maximumCodeWords) {
-    this->group = group;
-    this->solutions = solutions;
-}
-
 task* CommaFreeTask::execute() {
     if ( group->is_group_execution_cancelled() ) {
         return NULL;

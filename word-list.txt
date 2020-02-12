@@ -1,3 +1,13 @@
-Run task with n: 2, k: 6, using #cores: 8 in 0.015332 seconds.
-Found solution: 
-Found #0 code words.
+Run task with n: 5, k: 2, using #cores: 8 in 0.070042 seconds.
+Found solution: beaeecacbceddbdabadc
+be
+ae
+ec
+ac
+bc
+ed
+db
+da
+ba
+dc
+Found #10 code words.

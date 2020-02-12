@@ -12,6 +12,7 @@ CommaFreeScheduler::~CommaFreeScheduler() {
 }
 
 void CommaFreeScheduler::startCommaFreeParallel() {
+    task_scheduler_init my_task(numberCores);
     tick_count c0 = initParallelWork();
 
     auto setCodeWords = builder.buildPeriodicFreeUnorderedSet(wordList, k);
@@ -29,31 +30,9 @@ void CommaFreeScheduler::startCommaFreeParallel() {
     writeSolution(writer::getDictionary(), numberCores, (c1 - c0).seconds());
 }
 
-void CommaFreeScheduler::startCommaFreeVector() {
-    tick_count c0 = initParallelWork();
-
-    auto wordListIndices = builder.buildWordListIndices(wordList, k);
-
-    task_list roots;
-    for ( int i = 0; i < (int)wordListIndices.size(); ++i ) {
-        if ( wordListIndices[i] ) {
-            CommaFreeVectorTask* root = new(task::allocate_root(*context))CommaFreeVectorTask(wordList, wordListIndices, concurrent_vector<unsigned int>(), i, wordListIndices.size()/k, k, 0, context, NULL);
-            roots.push_back(*root);
-        }
-    }
-    task::spawn_root_and_wait(roots);
-
-    tick_count c1 = tick_count::now();
-    cout << "Time needed: " << (c1 - c0).seconds() << endl;
-    writeSolution(writer::getDictionary(), numberCores, (c1 - c0).seconds());
-}
-
 string CommaFreeScheduler::initWord() {
     string startWord = "";
-    /*for ( int i = 0; i < k; ++i ) {
-        startWord.append("a");
-    }*/
-    auto callback = [&](int index) {
+    auto callback = [&](auto _) {
         startWord.append("a");
     };
     parallel_for(0, k, callback);
@@ -63,7 +42,6 @@ string CommaFreeScheduler::initWord() {
 tick_count CommaFreeScheduler::initParallelWork() {
     cout << "Run task for n: " << n << endl;
     cout << "With k: " << k << endl;
-    task_scheduler_init my_task(numberCores);
     cout << "Using #" << numberCores << " cores." << endl;
     tick_count c0 = tick_count::now();
     createWordList(initWord());
