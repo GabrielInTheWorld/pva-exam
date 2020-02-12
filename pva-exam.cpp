@@ -11,8 +11,8 @@
 using namespace std;
 using namespace tbb;
 
+// Gebaut von Michael Sieb
 int main(int argc, char** argv) {
-    //int numberCores = 2;
     int numberCores = task_scheduler_init::automatic;
     int n = 2;
     int k = 6;

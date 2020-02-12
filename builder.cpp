@@ -1,9 +1,6 @@
 #include "builder.h"
 
-Builder::~Builder() {
-    delete context;
-}
-
+// Gebaut von Michael Sieb
 con_set Builder::buildPeriodicFreeUnorderedSet(concurrent_vector<string>* wordList, const int& k) {
     this->k = k;
 
@@ -18,17 +15,7 @@ con_set Builder::buildPeriodicFreeUnorderedSet(concurrent_vector<string>* wordLi
     return result;
 }
 
-concurrent_vector<bool> Builder::buildWordListIndices(concurrent_vector<string>* wordList, const int& k) {
-    this->k = k;
-
-    concurrent_vector<bool> wordListIndices(wordList->size(), 1);
-    auto callback = [&](int index) {
-        wordListIndices[index] = !checkIfPeriod((*wordList)[index]);
-    };
-    parallel_for(0, (int)wordList->size(), callback);
-    return wordListIndices;
-}
-
+// Gebaut von Gabriel Meyer
 bool Builder::checkIfPeriod(const string& word) {
     bool isPeriodic = true;
     concurrent_queue<int> q;

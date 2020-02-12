@@ -21,9 +21,6 @@
     <ClCompile Include="comma-free-seq.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="comma-free-parallel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="comma-free-scheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -36,15 +33,15 @@
     <ClCompile Include="writer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="comma-free-helper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="comma-free-seq.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="comma-free-parallel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="comma-free-scheduler.h">
@@ -57,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="writer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="comma-free-helper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

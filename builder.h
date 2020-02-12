@@ -18,14 +18,11 @@ typedef concurrent_unordered_set<string> con_set;
 
 class Builder {
 public:
-    ~Builder();
     con_set buildPeriodicFreeUnorderedSet(concurrent_vector<string>* wordList, const int& k);
-    concurrent_vector<bool> buildWordListIndices(concurrent_vector<string>* wordList, const int& k);
 
 private:
     bool checkIfPeriod(const string& word);
 
     int k = 0;
     concurrent_vector<string> resultList;
-    task_group_context* context;
 };

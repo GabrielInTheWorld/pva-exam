@@ -8,9 +8,9 @@
 using namespace std;
 using namespace tbb;
 
-class CommaFreeParallel : public task {
+class CommaFreeHelper : public task {
 public:
-    CommaFreeParallel(concurrent_vector<string>* wordList, string word, int index, int raise, int n, int k);
+    CommaFreeHelper(concurrent_vector<string>* wordList, string word, int index, int raise, int n, int k);
     task* execute();
 
 private:

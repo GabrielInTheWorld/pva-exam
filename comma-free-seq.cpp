@@ -6,10 +6,12 @@ CommaFreeSeq::CommaFreeSeq() {
     start();
 }
 
+// Gebaut von Gabriel Meyer
 bool CommaFreeSeq::codeContains(string code, string word) {
     return code.find(word) != string::npos;
 }
 
+// Gebaut von Michael Sieb
 bool CommaFreeSeq::checkIfAppendingIsAllowed(string code, string word) {
     string result = code + word;
     bool isAllowed = true;
@@ -27,6 +29,7 @@ bool CommaFreeSeq::checkIfAppendingIsAllowed(string code, string word) {
     return isAllowed;
 }
 
+// Gebaut von Gabriel Meyer
 bool CommaFreeSeq::checkIfPeriodic(string word) {
     bool isPeriodic = true;
     queue<int> q;
@@ -54,6 +57,7 @@ bool CommaFreeSeq::checkIfPeriodic(string word) {
     return isPeriodic;
 }
 
+// Gebaut von Michael Sieb
 bool CommaFreeSeq::checkIfCyclical(string code, string word) {
     bool cyclical = false;
     for ( int i = 0; i < k; ++i ) {
@@ -66,10 +70,12 @@ bool CommaFreeSeq::checkIfCyclical(string code, string word) {
     return cyclical;
 }
 
+// Gebaut von Gabriel Meyer
 bool CommaFreeSeq::checkIfCommaFree(string word) {
     return word.size() == k && !checkIfPeriodic(word) && !checkIfCyclical(commaFreeCode, word) && checkIfAppendingIsAllowed(commaFreeCode, word);
 }
 
+// Gebaut von Michael Sieb
 void CommaFreeSeq::initWordList() {
     string word;
     ifstream readFile("word-list.txt");
@@ -80,6 +86,7 @@ void CommaFreeSeq::initWordList() {
     }
 }
 
+// Gebaut von Gabriel Meyer
 void CommaFreeSeq::start() {
     cout << "Press 'x' to cancel" << endl;
     ofstream writeFile("word-list.txt");

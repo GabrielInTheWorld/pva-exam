@@ -9,6 +9,7 @@ CommaFreeTask::CommaFreeTask(con_set wordList, string code, string wordToAppend,
     this->group = group;
 }
 
+// Gebaut von Gabriel Meyer
 task* CommaFreeTask::execute() {
     if ( group->is_group_execution_cancelled() ) {
         return NULL;
@@ -58,10 +59,12 @@ task* CommaFreeTask::execute() {
     return NULL;
 }
 
+// Gebaut von Michael Sieb
 bool CommaFreeTask::codeContains(const string& code, const string& word) {
     return code.find(word) != string::npos;
 }
 
+// Gebaut von Gabriel Meyer
 bool CommaFreeTask::checkIfCyclical(const string& code, string word) {
     bool cyclical = false;
     for ( int i = 0; i < k; ++i ) {
@@ -74,6 +77,7 @@ bool CommaFreeTask::checkIfCyclical(const string& code, string word) {
     return cyclical;
 }
 
+// Gebaut von Michael Sieb
 bool CommaFreeTask::checkIfAppendingIsAllowed(const string& code, string word) {
     string result = code + word;
     bool isAllowed = true;
@@ -91,6 +95,7 @@ bool CommaFreeTask::checkIfAppendingIsAllowed(const string& code, string word) {
     return isAllowed;
 }
 
+// Gebaut von Micheal Sieb
 void CommaFreeTask::filterCyclicalWords(con_set& list, string word) {
     for ( int i = 0; i < k; ++i ) {
         rotate(word.begin(), word.begin() + 1, word.end());

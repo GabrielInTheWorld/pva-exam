@@ -9,7 +9,7 @@
 #include <tbb/parallel_for.h>
 #include <tbb/concurrent_vector.h>
 
-#include "comma-free-parallel.h"
+#include "comma-free-helper.h"
 #include "builder.h"
 #include "writer.h"
 

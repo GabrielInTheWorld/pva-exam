@@ -1,6 +1,6 @@
-#include "comma-free-parallel.h"
+#include "comma-free-helper.h"
 
-CommaFreeParallel::CommaFreeParallel(concurrent_vector<string>* wordList, string word, int index, int raise, int n, int k) {
+CommaFreeHelper::CommaFreeHelper(concurrent_vector<string>* wordList, string word, int index, int raise, int n, int k) {
     this->n = n;
     this->k = k;
     this->wordList = wordList;
@@ -9,7 +9,8 @@ CommaFreeParallel::CommaFreeParallel(concurrent_vector<string>* wordList, string
     this->word = word;
 }
 
-task* CommaFreeParallel::execute() {
+// Gebaut von Michael Sieb
+task* CommaFreeHelper::execute() {
     word[index] += raise;
     if ( !contains(*wordList, word) ) {
         wordList->push_back(word);
@@ -22,7 +23,7 @@ task* CommaFreeParallel::execute() {
     task_list list;
     int count = 0;
     auto callback = [&](int i) {
-        list.push_back(*new (allocate_child())CommaFreeParallel(wordList, word, index + 1, i, n, k));
+        list.push_back(*new (allocate_child())CommaFreeHelper(wordList, word, index + 1, i, n, k));
         ++count;
     };
     parallel_for(0, n, callback);
@@ -35,6 +36,7 @@ task* CommaFreeParallel::execute() {
     return NULL;
 }
 
-bool CommaFreeParallel::contains(concurrent_vector<string> list, string word) {
+// Gebaut von Gabriel Meyer
+bool CommaFreeHelper::contains(concurrent_vector<string> list, string word) {
     return find(list.begin(), list.end(), word) != list.end();
 }

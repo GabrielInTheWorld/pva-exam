@@ -11,6 +11,7 @@ CommaFreeScheduler::~CommaFreeScheduler() {
     delete wordList;
 }
 
+// Gebaut von Gabriel Meyer
 void CommaFreeScheduler::startCommaFreeParallel() {
     task_scheduler_init my_task(numberCores);
     tick_count c0 = initParallelWork();
@@ -31,6 +32,7 @@ void CommaFreeScheduler::startCommaFreeParallel() {
     writeSolution(writer::getDictionary(), numberCores, (c1 - c0).seconds());
 }
 
+// Gebaut von Michael Sieb
 string CommaFreeScheduler::initWord() {
     string startWord = "";
     auto callback = [&](auto _) {
@@ -40,6 +42,7 @@ string CommaFreeScheduler::initWord() {
     return startWord;
 }
 
+// Gebaut von Michael Sieb
 tick_count CommaFreeScheduler::initParallelWork() {
     cout << "Run task for n: " << n << endl;
     cout << "With k: " << k << endl;
@@ -49,17 +52,19 @@ tick_count CommaFreeScheduler::initParallelWork() {
     return c0;
 }
 
+// Gebaut von Gabriel Meyer
 void CommaFreeScheduler::createWordList(string startWord) {
     task_list list;
     for ( int i = 0; i < n; ++i ) {
         string tmp = startWord;
-        CommaFreeParallel* root = new (task::allocate_root())CommaFreeParallel(wordList, tmp, 0, i, n, k);
+        CommaFreeHelper* root = new (task::allocate_root())CommaFreeHelper(wordList, tmp, 0, i, n, k);
         list.push_back(*root);
     }
     task::spawn_root_and_wait(list);
     cout << "Number of all words: " << wordList->size() << endl;
 }
 
+// Gebaut von Michael Sieb
 void CommaFreeScheduler::writeSolution(string solutionCode, int numberCores, double seconds) {
     int solutions = 0;
     string stream = "Run task with n: " + to_string(n) + ", k: " + to_string(k) + ", using #cores: " + to_string(numberCores) + " in " + to_string(seconds) + " seconds.\nFound solution: " + solutionCode;

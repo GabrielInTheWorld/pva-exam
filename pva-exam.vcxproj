@@ -181,7 +181,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="builder.cpp" />
-    <ClCompile Include="comma-free-parallel.cpp" />
+    <ClCompile Include="comma-free-helper.cpp" />
     <ClCompile Include="comma-free-scheduler.cpp" />
     <ClCompile Include="comma-free-seq.cpp" />
     <ClCompile Include="comma-free-task.cpp" />
@@ -193,7 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="builder.h" />
-    <ClInclude Include="comma-free-parallel.h" />
+    <ClInclude Include="comma-free-helper.h" />
     <ClInclude Include="comma-free-scheduler.h" />
     <ClInclude Include="comma-free-seq.h" />
     <ClInclude Include="comma-free-task.h" />
